@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     storageBucket: 'bakerie-827e6.appspot.com',
-    iosClientId: '812072198825-e6qhe3er75bhu5nni3nqn2ivrpk62h35.apps.googleusercontent.com',
+    iosClientId:
+        '812072198825-e6qhe3er75bhu5nni3nqn2ivrpk62h35.apps.googleusercontent.com',
     iosBundleId: 'com.bakerie.haven',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     storageBucket: 'bakerie-827e6.appspot.com',
-    iosClientId: '812072198825-j79m1i08llt8ume1fd7gfe0bvbuq41sn.apps.googleusercontent.com',
-    iosBundleId: 'com.bakerie.bakerieHaven',
+    iosClientId:
+        '812072198825-j79m1i08llt8ume1fd7gfe0bvbuq41sn.apps.googleusercontent.com',
+    iosBundleId: 'com.bakerie.haven',
   );
 }
