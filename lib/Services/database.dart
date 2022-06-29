@@ -83,7 +83,7 @@ class DatabaseService {
       snapshot.get('email'),
       snapshot.get('user'),
       snapshot.get('pass'),
-      snapshot.get('tags'),
+      //snapshot.get('tags'),
     );
   }
 
@@ -95,6 +95,7 @@ class DatabaseService {
       //snapshot.get('rating'),
       //snapshot.get('age'),
       snapshot.get('url'),
+      snapshot.get('myItemCount'),
     );
   }
 

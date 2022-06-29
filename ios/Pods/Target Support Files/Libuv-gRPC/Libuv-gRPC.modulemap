@@ -1,4 +1,4 @@
-framework module uv {
+module uv {
   umbrella header "Libuv-gRPC-umbrella.h"
 
   export *

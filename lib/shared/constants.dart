@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 const textInputDecoration = InputDecoration(
     fillColor: Colors.white,
     filled: true,
+    isDense: true,
+    contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 5.0, 15.0),
     enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
       color: Colors.white,

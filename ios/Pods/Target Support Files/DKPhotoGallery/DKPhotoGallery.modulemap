@@ -1,4 +1,4 @@
-framework module DKPhotoGallery {
+module DKPhotoGallery {
   umbrella header "DKPhotoGallery-umbrella.h"
 
   export *

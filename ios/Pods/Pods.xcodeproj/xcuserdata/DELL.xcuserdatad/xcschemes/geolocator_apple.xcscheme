@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1340"
+   LastUpgradeVersion = "1240"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D2129B9E0DCE64EA38C25BA6C89558D7"
-               BuildableName = "geolocator_apple.framework"
+               BuildableName = "libgeolocator_apple.a"
                BlueprintName = "geolocator_apple"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

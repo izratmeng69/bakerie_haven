@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1340"
+   LastUpgradeVersion = "1240"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "22D95D85E6A94D407DAEE8961939CFB9"
-               BuildableName = "firebase_database.framework"
+               BuildableName = "libfirebase_database.a"
                BlueprintName = "firebase_database"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

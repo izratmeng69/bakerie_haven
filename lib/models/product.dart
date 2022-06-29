@@ -50,8 +50,9 @@ class SupplierData {
   //final String rating;
   //final int age;
   final String url;
-  SupplierData(
-      this.uid, this.name, this.location, /*this.rating, this.age, */ this.url);
+  final int count;
+  SupplierData(this.uid, this.name, this.location,
+      /*this.rating, this.age, */ this.url, this.count);
 }
 
 class CustData {
@@ -68,8 +69,14 @@ class CurrentLoginDetails {
   final String email;
   final String userType;
   final String pw;
-  final List tags;
-  CurrentLoginDetails(this.uid, this.email, this.userType, this.pw, this.tags);
+  //final List tags;
+  CurrentLoginDetails(
+    this.uid,
+    this.email,
+    this.userType,
+    this.pw,
+    /*this.tags*/
+  );
 }
 
 

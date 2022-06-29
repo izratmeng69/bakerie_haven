@@ -1,4 +1,4 @@
-framework module firebase_database {
+module firebase_database {
   umbrella header "firebase_database-umbrella.h"
 
   export *

@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:bakerie_haven/models/product.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
+  CurrentLoginDetails? details;
+  NavBar(this.details);
+
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -53,19 +62,25 @@ class NavBar extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image(
-                  image: AssetImage('assets/images/logosplash.png'),
+                  image: widget.details!.userType == "supplier"
+                      ? NetworkImage(
+                          'https://static.vecteezy.com/system/resources/thumbnails/003/126/397/small/line-icon-for-deliverable-vector.jpg')
+                      : NetworkImage(
+                          'https://w1.pngwing.com/pngs/726/597/png-transparent-graphic-design-icon-customer-service-avatar-icon-design-call-centre-yellow-smile-forehead.png'),
                   fit: BoxFit.cover,
                   width: 100,
                   height: 100,
                 ),
               ),
             ),
-            /*decoration: BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.blue,
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: AssetImage("assets/images/logosplash.png")),
-            ),*/
+                  image: widget.details!.userType == "customer"
+                      ? AssetImage("users/customer.png")
+                      : AssetImage("users/supplier.png")),
+            ),
           ),
           Divider(),
           ListTile(

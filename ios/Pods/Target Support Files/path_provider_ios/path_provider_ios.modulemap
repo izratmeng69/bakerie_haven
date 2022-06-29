@@ -1,4 +1,4 @@
-framework module path_provider_ios {
+module path_provider_ios {
   umbrella header "path_provider_ios-umbrella.h"
 
   export *

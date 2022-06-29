@@ -53,24 +53,25 @@ class MyApp extends StatelessWidget {
 
         value: AuthService().user, //stream to listen to
         child: MaterialApp(
-            theme: ThemeData(
+            /* theme: ThemeData(
               // Define the default brightness and colors.
               brightness: Brightness.dark,
-              primaryColor: Color(0XFF673f45), //Colors.lightBlue[800],
+              primaryColor: Colors
+                  .lightBlue[800], //Color(0XFF673f45), //Colors.lightBlue[800],
 
               // Define the default font family.
-              fontFamily: 'Lato',
+              fontFamily: 'Georgia',
 
               // Define the default `TextTheme`. Use this to specify the default
               // text styling for headlines, titles, bodies of text, and more.
               textTheme: const TextTheme(
                 headline1:
-                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
                 headline6:
-                    TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+                    TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic),
+                bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Georgia'),
               ),
-            ),
+            ),*/
             home:
                 Wrapper()), //Dashboard()), //Wrapper()), //SeeMoreDropDown()), //
       );

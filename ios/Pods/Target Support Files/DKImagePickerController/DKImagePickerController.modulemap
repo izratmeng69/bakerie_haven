@@ -1,4 +1,4 @@
-framework module DKImagePickerController {
+module DKImagePickerController {
   umbrella header "DKImagePickerController-umbrella.h"
 
   export *

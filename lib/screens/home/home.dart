@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
                   //SearchBar(),
                 ],
               ), //SearchBar(search: (searched),),
-              drawer: NavBar(),
+              drawer: NavBar(userDetails),
               key: _formKey,
               body: Column(children: [
                 //Center(child: Text(" You are a " + userDetails.userType)),
@@ -183,7 +183,7 @@ class _TestState extends State<Test> {
       return Container(child: Center(child: Text("details wanst retrieved")));
     }
     print("tyhe value we got was " +
-        widget.curr.tags[0] +
+        widget.curr.email +
         " /n You are a " +
         widget.curr.userType);
     // return //Container(child: Center(child: Text(widget.curr.uid)));
@@ -239,7 +239,7 @@ class _TestState extends State<Test> {
                 ),
               ),
               child: Column(children: [
-                Text(widget.curr.tags[0]),
+                // Text(widget.curr.),
                 ProductsList(),
                 /*FutureBuilder(
                     future: _getImage(context, 'avatar1.png'),
