@@ -1,4 +1,4 @@
-package com.bakerie.bakerie_haven
+package com.bakerie.haven
 
 import io.flutter.embedding.android.FlutterActivity
 

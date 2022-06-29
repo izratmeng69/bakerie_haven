@@ -63,23 +63,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD5b5rgxMEMpJ1wOZY-psl13ixFQ2PmeGs',
-    appId: '1:812072198825:ios:a741eb66de38915327ffb8',
+    appId: '1:812072198825:ios:af45ef3725878ce227ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     storageBucket: 'bakerie-827e6.appspot.com',
-    iosClientId:
-        '812072198825-e6qhe3er75bhu5nni3nqn2ivrpk62h35.apps.googleusercontent.com',
-    iosBundleId: 'com.bakerie.haven',
+    iosClientId: '812072198825-j79m1i08llt8ume1fd7gfe0bvbuq41sn.apps.googleusercontent.com',
+    iosBundleId: 'com.bakerie.bakerieHaven',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyD5b5rgxMEMpJ1wOZY-psl13ixFQ2PmeGs',
-    appId: '1:812072198825:ios:168254b82999271827ffb8',
+    appId: '1:812072198825:ios:a741eb66de38915327ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     storageBucket: 'bakerie-827e6.appspot.com',
-    iosClientId:
-        '812072198825-j79m1i08llt8ume1fd7gfe0bvbuq41sn.apps.googleusercontent.com',
+    iosClientId: '812072198825-e6qhe3er75bhu5nni3nqn2ivrpk62h35.apps.googleusercontent.com',
     iosBundleId: 'com.bakerie.haven',
   );
 }
