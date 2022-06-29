@@ -15,7 +15,7 @@ import 'dart:io'
     as io; // for File? class, filepicker- apparently it supports all devices now
 import 'package:path/path.dart'; //needed for basename, file picker
 import 'dart:async';
-import 'dart:html'; //hide File;
+//import 'dart:html'; //hide File;
 import 'dart:typed_data';
 import 'package:bakerie_haven/Services/auth.dart';
 

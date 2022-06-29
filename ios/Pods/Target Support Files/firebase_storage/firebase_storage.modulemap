@@ -1,6 +1,0 @@
-module firebase_storage {
-  umbrella header "firebase_storage-umbrella.h"
-
-  export *
-  module * { export * }
-}
