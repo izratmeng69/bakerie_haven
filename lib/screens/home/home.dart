@@ -235,7 +235,7 @@ class _TestState extends State<Test> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('images/bg.jpeg'),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
               child: Column(children: [
