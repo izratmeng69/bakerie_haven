@@ -58,7 +58,7 @@ class _ProductsListState extends State<ProductsList> {
                       products.length == 0
                           ? Container(
                               decoration: BoxDecoration(
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 230, 230, 230),
                                 borderRadius: BorderRadius.circular(12.0),
                                 boxShadow: [
                                   BoxShadow(
@@ -70,14 +70,14 @@ class _ProductsListState extends State<ProductsList> {
                                 border: Border.all(),
                               ),
                               //color: Colors.white,
-                              height: 100,
+                              // height: 100,
                               child: Column(
                                 children: [
                                   Text(
                                       'NO products available. This may be an errpr. Would yoj like to notify us?',
                                       style: TextStyle(
                                           fontSize: 20.0,
-                                          color: Colors.white,
+                                          color: Colors.pinkAccent,
                                           fontStyle: FontStyle.italic,
                                           fontWeight: FontWeight.w800)),
                                   Padding(
@@ -94,7 +94,6 @@ class _ProductsListState extends State<ProductsList> {
                                               fontWeight: FontWeight.w800),
                                         )),
                                   ),
-                                  
                                 ],
                               ),
                             )
@@ -145,7 +144,7 @@ class _ProductsListState extends State<ProductsList> {
       );
 
   Widget buildHeader(int length) => ListTile(
-        tileColor: Colors.blue,
+        tileColor: Color.fromARGB(255, 230, 230, 230),
         leading: Container(
           width: 52,
           height: 52,

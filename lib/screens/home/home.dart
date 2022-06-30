@@ -99,7 +99,9 @@ class _HomeState extends State<Home> {
           if (snapshot.hasData) {
             CurrentLoginDetails userDetails = snapshot.data!;
             return Scaffold(
+              backgroundColor: Color.fromARGB(255, 230, 230, 230),
               bottomNavigationBar: BottomNavigationBar(
+                backgroundColor: Color.fromARGB(255, 230, 230, 230),
                 elevation: 12.0,
                 currentIndex: _selectedScreenIndex,
                 onTap: _selectScreen,
@@ -112,11 +114,13 @@ class _HomeState extends State<Home> {
                   BottomNavigationBarItem(
                     icon: Icon(Icons.settings),
                     label: "Settings",
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.pinkAccent,
                   )
                 ],
               ),
               appBar: AppBar(
+                backgroundColor: Color.fromARGB(255, 230, 230, 230),
+                shadowColor: Color.fromARGB(255, 230, 230, 230),
                 actions: [
                   //SearchBar(),
                 ],
@@ -132,21 +136,6 @@ class _HomeState extends State<Home> {
           } else {
             return Loading();
           }
-        });
-  }
-
-  final AuthService _auth = AuthService();
-
-  bool _isQueried = false;
-  void _showSettingsPanel(CurrentLoginDetails details) {
-    //this is a built in flutter widget fucntion
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: SettingsForm(details: details),
-          );
         });
   }
 }
@@ -195,13 +184,13 @@ class _TestState extends State<Test> {
                 ? DatabaseService(uid: user!.uid).items
                 : DatabaseService(uid: user!.uid).myItems, //expensive(),
         child: Scaffold(
-            drawer: new Container(color: Colors.white),
+            // drawer: new Container(color: Colors.black),
             backgroundColor: Color.fromARGB(255, 138, 59, 31),
             appBar: AppBar(
               automaticallyImplyLeading:
-                  false, //this remo0ves unwanted hamburger menu
+                  false, //this remo0ves unwanted hamburger menu, guess it doesnt
               title: Text("bakerie"),
-              backgroundColor: Colors.amberAccent,
+              backgroundColor: Color.fromARGB(255, 230, 230, 230),
               elevation: 0.0,
               actions: <Widget>[
                 new Container(),
@@ -217,7 +206,10 @@ class _TestState extends State<Test> {
                       onPressed: () {
                         _showSettingsPanel();
                       },
-                      icon: Icon(Icons.settings),
+                      icon: Icon(
+                        Icons.settings,
+                        color: Color.fromARGB(255, 230, 230, 230),
+                      ),
                       label: Text("Settings")),
                 ),
                 Expanded(
@@ -231,43 +223,50 @@ class _TestState extends State<Test> {
                 ),
               ], //actions inappbar expects widgetlist of buttons
             ),
-            body: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/bg.jpeg'),
-                  fit: BoxFit.contain,
-                ),
-              ),
-              child: Column(children: [
-                // Text(widget.curr.),
-                ProductsList(),
-                /*FutureBuilder(
-                    future: _getImage(context, 'avatar1.png'),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return Container();
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Loading();
-                      } else {
-                        return Container(child:Text("Couldn't load image"));
-                      }
-                    })*/
+            body: Column(
+              children: [
                 Container(
-                    decoration: boxDecoration,
-                    alignment: Alignment.topCenter,
-                    child: TextButton.icon(
-                        onPressed: () {
-                          setState(() {
-                            if (_isQueried == false)
-                              _isQueried = true;
-                            else
-                              _isQueried = false;
-                          });
-                        },
-                        icon: Icon(Icons.money),
-                        label: Text("List most costly products")))
-              ]),
+                  height: 600,
+                  width: double.infinity,
+                  /* decoration: BoxDecoration(
+                    image: DecorationImage(
+                      scale: 1.0,
+                      image: AssetImage('watch1.jpeg'),
+                      // fit: BoxFit.contain,
+                    ),
+                  ),*/
+                  child: Column(children: [
+                    // Text(widget.curr.),
+                    ProductsList(),
+                    /*FutureBuilder(
+                        future: _getImage(context, 'avatar1.png'),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            return Container();
+                          }
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Loading();
+                          } else {
+                            return Container(child:Text("Couldn't load image"));
+                          }
+                        })*/
+                    Container(
+                        decoration: boxDecoration,
+                        alignment: Alignment.topCenter,
+                        child: TextButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                if (_isQueried == false)
+                                  _isQueried = true;
+                                else
+                                  _isQueried = false;
+                              });
+                            },
+                            icon: Icon(Icons.money),
+                            label: Text("List most costly products")))
+                  ]),
+                ),
+              ],
             )));
   }
 }

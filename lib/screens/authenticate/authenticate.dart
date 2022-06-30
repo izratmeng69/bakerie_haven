@@ -27,7 +27,7 @@ class _AuthenticateState extends State<Authenticate> {
   String password = 'pass';
   String _type = "unknown";
   String _error = "Registering...";
-  bool tapped = false;
+  bool _tapped = false;
   double radius = 200;
   String log = "Authenticate";
   bool switchValue = false;
@@ -47,7 +47,7 @@ class _AuthenticateState extends State<Authenticate> {
       child: loading
           ? Loading()
           : Scaffold(
-              backgroundColor: Colors.blue[300],
+              backgroundColor: Color.fromARGB(255, 230, 230, 230),
               /*appBar: AppBar(
                 title: switchValue == false
                     ? const Text("Register")
@@ -73,13 +73,21 @@ class _AuthenticateState extends State<Authenticate> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-                        child: Text(
-                          'Are you a Customer or Supplier?',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                          padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
+                          child: Visibility(
+                            visible: !switchValue,
+                            child: _tapped == false
+                                ? Text(
+                                    'Are you a Customer or Supplier?',
+                                    style: TextStyle(
+                                        color: Colors.purpleAccent,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text('You are registering as a ',
+                                    style: TextStyle(
+                                        color: Colors.purpleAccent,
+                                        fontWeight: FontWeight.bold)),
+                          )),
                     ),
                     AnimatedOpacity(
                       curve: Curves.elasticOut,
@@ -103,36 +111,37 @@ class _AuthenticateState extends State<Authenticate> {
                                                         BorderRadius.circular(200.0)),*/
                                     Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: InkWell(
-                                    //card foreach type
-                                    onTap: () {
-                                      if (index == 0) {
-                                        setState(() {
-                                          _type = "customer";
-                                          tapped = true;
-                                          _currentOpacity = 0;
+                                  child: CircleAvatar(
+                                    foregroundColor: Colors.black12,
+                                    backgroundImage: index == 0
+                                        ? NetworkImage(
+                                            'https://www.efficy.com/wp-content/uploads/2019/03/new-customer.png')
+                                        : NetworkImage(
+                                            'https://cdn0.iconfinder.com/data/icons/miscellaneous-14-color-shadow/128/deliverable_deliver_courier_occupation_package_parcel_supplier-1024.png'),
+                                    radius: 90,
 
-                                          print(" index at 0 clicked");
-                                        });
-                                      } else if (index == 1) {
-                                        setState(() {
-                                          _type = "supplier";
-                                          tapped = true;
-                                          _currentOpacity = 0;
-                                          print(" index at 1 clicked");
-                                        });
-                                      }
-                                    },
-                                    child: CircleAvatar(
-                                      foregroundColor: Colors.lightBlueAccent,
-                                      backgroundImage: index == 0
-                                          ? NetworkImage(
-                                              'https://www.efficy.com/wp-content/uploads/2019/03/new-customer.png')
-                                          : NetworkImage(
-                                              'https://cdn0.iconfinder.com/data/icons/miscellaneous-14-color-shadow/128/deliverable_deliver_courier_occupation_package_parcel_supplier-1024.png'),
-                                      radius: 100,
+                                    //  ),
+                                    child: InkWell(
+                                      splashColor: Colors.black12,
+                                      //card foreach type
+                                      onTap: () {
+                                        if (index == 0) {
+                                          setState(() {
+                                            _type = "customer";
+                                            _tapped = true;
+                                            _currentOpacity = 0;
 
-                                      //  ),
+                                            print(" index at 0 clicked");
+                                          });
+                                        } else if (index == 1) {
+                                          setState(() {
+                                            _type = "supplier";
+                                            _tapped = true;
+                                            _currentOpacity = 0;
+                                            print(" index at 1 clicked");
+                                          });
+                                        }
+                                      },
                                     ),
                                   ),
                                 );
@@ -153,7 +162,7 @@ class _AuthenticateState extends State<Authenticate> {
 
   Widget BuildForm(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(10, 20, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
       child: Column(children: [
         Form(
           key: _formKey, //created
@@ -172,11 +181,10 @@ class _AuthenticateState extends State<Authenticate> {
                 },
               ),
               TextFormField(
-                decoration: textInputDecoration
-                    .copyWith(
-                        hintText: 'password',
-                        hintStyle: TextStyle(color: Colors.black12))
-                    .copyWith(labelStyle: TextStyle(color: Colors.black)),
+                decoration: textInputDecoration.copyWith(
+                    hintText: 'password',
+                    hintStyle: TextStyle(color: Colors.black12)),
+                //.copyWith(labelStyle: TextStyle(color: Colors.black)),
                 validator: (val) =>
                     val!.length < 6 ? "Enter a password 6 chars long" : null,
                 onChanged: (val) {
@@ -186,7 +194,7 @@ class _AuthenticateState extends State<Authenticate> {
                 },
               ),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
               switchValue == false
                   ? TextButton(
@@ -197,7 +205,7 @@ class _AuthenticateState extends State<Authenticate> {
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate() &&
-                            tapped == true) {
+                            _tapped == true) {
                           setState(() {
                             loading = true;
                           });
@@ -303,12 +311,15 @@ class _AuthenticateState extends State<Authenticate> {
                   _currentOpacity = 0;
                   // value = true;
                   switchValue = true;
+                  _tapped == false;
+                  // tapped == true;
                 });
               } else if (switchValue == true) {
                 setState(() {
                   _currentOpacity = 1;
                   _error = "Registering...";
                   switchValue = false;
+                  _tapped == false;
                 });
               }
               this.switchValue =
