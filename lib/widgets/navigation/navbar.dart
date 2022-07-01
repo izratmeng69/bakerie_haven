@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:bakerie_haven/models/product.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/foundation.dart';
 
 class NavBar extends StatefulWidget {
-  CurrentLoginDetails? details;
+  CurrentLoginDetails details;
+
   NavBar(this.details);
 
   @override
@@ -16,7 +19,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return ClipRRect(
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(35), bottomRight: Radius.circular(35)),
+            topRight: Radius.circular(20), bottomRight: Radius.circular(35)),
         child: Drawer(
           // shape: ShapeBorder.lerp(a, b:ShapeBorder()., t:0.6)
           backgroundColor: Colors.pinkAccent,
@@ -24,11 +27,13 @@ class _NavBarState extends State<NavBar> {
             padding: const EdgeInsets.fromLTRB(0, 40, 10, 20),
             child: ListView(
               // Remove padding
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.fromLTRB(0, 2, 2, 10),
               children: [
-                
                 UserAccountsDrawerHeader(
-                  accountName: RichText(
+                  currentAccountPictureSize: Size.fromRadius(50),
+                  arrowColor: Colors.pinkAccent,
+                  accountName: Text(''),
+                  /*RichText(
                     // accountEmail: "".
                     text: TextSpan(
                         style: TextStyle(
@@ -64,31 +69,35 @@ class _NavBarState extends State<NavBar> {
                             ),
                           ),
                         ]),
-                  ),
-                  accountEmail: Text('trial course',
+                  ),*/
+                  accountEmail: Text(widget.details.email,
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Tahoma",
                       )),
-                  currentAccountPicture: CircleAvatar(
-                    child: ClipOval(
-                      child: Image(
-                        image: widget.details!.userType == "supplier"
-                            ? NetworkImage(
-                                'https://static.vecteezy.com/system/resources/thumbnails/003/126/397/small/line-icon-for-deliverable-vector.jpg')
-                            : NetworkImage(
-                                'https://w1.pngwing.com/pngs/726/597/png-transparent-graphic-design-icon-customer-service-avatar-icon-design-call-centre-yellow-smile-forehead.png'),
-                        fit: BoxFit.fitHeight,
-                        width: 100,
-                        height: 100,
+                  currentAccountPicture: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.pinkAccent,
+                      child: ClipOval(
+                        child: Image(
+                            image: widget.details.userType == "supplier"
+                                ? NetworkImage(
+                                    'https://static.vecteezy.com/system/resources/thumbnails/003/126/397/small/line-icon-for-deliverable-vector.jpg')
+                                : NetworkImage(
+                                    'https://w1.pngwing.com/pngs/726/597/png-transparent-graphic-design-icon-customer-service-avatar-icon-design-call-centre-yellow-smile-forehead.png'),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity // 200,
+                            ),
                       ),
                     ),
                   ),
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              'https://w1.pngwing.com/pngs/726/597/png-transparent-graphic-design-icon-customer-service-avatar-icon-design-call-centre-yellow-smile-forehead.png')),
-                      color: Color.fromARGB(255, 230, 230, 230),
+
+                      // color: Colors.pinkAccent,
+
+                      ///fromARGB(255, 230, 230, 230),
                       shape: BoxShape.circle),
                 ),
                 Divider(),
@@ -106,7 +115,9 @@ class _NavBarState extends State<NavBar> {
                 ListTile(
                   title: Text('Exit'),
                   leading: Icon(Icons.exit_to_app),
-                  onTap: () => exit(0),
+                  onTap: () => defaultTargetPlatform == TargetPlatform.android
+                      ? SystemNavigator.pop()
+                      : exit(0),
                 ),
               ],
             ),

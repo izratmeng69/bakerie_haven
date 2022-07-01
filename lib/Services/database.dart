@@ -19,7 +19,7 @@ class DatabaseService {
   final CollectionReference supCollection =
       FirebaseFirestore.instance.collection('Suppliers');
   final CollectionReference itemCollection =
-      FirebaseFirestore.instance.collection('ItemInfo');
+      FirebaseFirestore.instance.collection('Products');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('Users');
   //'orders collectio  nwill be created if it doesnt already exists

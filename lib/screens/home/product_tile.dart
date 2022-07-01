@@ -44,14 +44,17 @@ class ProductTile extends StatelessWidget {
     } //end of payment form
 
     return Card(
-        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+        margin: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         child: InkWell(
           onTap: () {
             _showPurchasePanel(index);
           },
           child: Column(
             children: [
-              Image.network(file.url),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.network(file.url),
+              ),
               ListTile(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(

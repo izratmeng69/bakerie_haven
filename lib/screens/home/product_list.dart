@@ -12,7 +12,8 @@ import 'package:bakerie_haven/screens/home/image_page.dart';
 
 class ProductsList extends StatefulWidget {
   //const ProductsList({Key? key}) : super(key: key);
-
+  CurrentLoginDetails details;
+  ProductsList({Key? key, required this.details}) : super(key: key);
   @override
   State<ProductsList> createState() => _ProductsListState();
 }
@@ -53,7 +54,9 @@ class _ProductsListState extends State<ProductsList> {
                   return Column(
                     //  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      buildHeader(products.length),
+                      widget.details.userType == "supplier"
+                          ? buildHeader(products.length)
+                          : SizedBox.shrink(),
                       const SizedBox(height: 12),
                       products.length == 0
                           ? Container(
@@ -74,7 +77,7 @@ class _ProductsListState extends State<ProductsList> {
                               child: Column(
                                 children: [
                                   Text(
-                                      'NO products available. This may be an errpr. Would yoj like to notify us?',
+                                      'NO products available. This may be an error. Would you like to notify us?',
                                       style: TextStyle(
                                           fontSize: 20.0,
                                           color: Colors.pinkAccent,
@@ -149,12 +152,12 @@ class _ProductsListState extends State<ProductsList> {
           width: 52,
           height: 52,
           child: Icon(
-            Icons.file_copy,
+            Icons.local_grocery_store,
             color: Colors.white,
           ),
         ),
         title: Text(
-          '$length Files',
+          '$length Products In Inventory',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
