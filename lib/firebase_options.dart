@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     authDomain: 'bakerie-827e6.firebaseapp.com',
+    databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',
     storageBucket: 'bakerie-827e6.appspot.com',
     measurementId: 'G-XQZPXP74E3',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:812072198825:android:e98a19ead7df79c527ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
+    databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',
     storageBucket: 'bakerie-827e6.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:812072198825:ios:af45ef3725878ce227ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
+    databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',
     storageBucket: 'bakerie-827e6.appspot.com',
     iosClientId: '812072198825-j79m1i08llt8ume1fd7gfe0bvbuq41sn.apps.googleusercontent.com',
     iosBundleId: 'com.bakerie.bakerieHaven',
@@ -76,6 +79,7 @@ class DefaultFirebaseOptions {
     appId: '1:812072198825:ios:a741eb66de38915327ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
+    databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',
     storageBucket: 'bakerie-827e6.appspot.com',
     iosClientId: '812072198825-e6qhe3er75bhu5nni3nqn2ivrpk62h35.apps.googleusercontent.com',
     iosBundleId: 'com.bakerie.haven',
