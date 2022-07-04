@@ -76,7 +76,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyD5b5rgxMEMpJ1wOZY-psl13ixFQ2PmeGs',
-    appId: '1:812072198825:ios:a741eb66de38915327ffb8',
+    appId: '1:812072198825:ios:6602a9415b27f75a27ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',

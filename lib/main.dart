@@ -15,12 +15,13 @@ import 'firebase_options.dart'; //for options
 import 'package:bakerie_haven/models/currentuser.dart';
 //import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:bakerie_haven/screens/home/dashboard.dart';
+
 //import 'package:sliver_tools/sliver_tools.dart';
 //shared variables
 //import 'package:shared_preferences/shared_preferences.dart';
 //encryption
 //import 'package:flutter_string_encryption/flutter_string_encryption.dart';
-
+//import 'package:firebase_analytics/firebase_analytics.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //final Future<FirebaseApp> _initialization = Firebase.initializeApp();
