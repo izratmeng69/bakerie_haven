@@ -130,16 +130,120 @@ class _SettingsFormState extends State<SettingsForm> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<CurrentUser?>(context);
+    final user = Provider.of<CurrentUser>(context);
     //final Future
     final fileName = myFile != null ? basename(myFile!.path) : 'no file picked';
     // final String _stream;
     //vecause we needto acesss context
 
-    print(" we have reached the settings form");
+    print(" we have reached the settings form and user id is: " + user.uid);
     print(widget.details.userType);
-    print(user!.uid);
-    return (widget.details.userType == "customer")
+    //print(user.uid);
+    //return Text(");
+    if (widget.details.userType == "customer") {
+      return Form(
+          key: _formKey,
+          child: StreamBuilder<CustData>(
+              stream: DatabaseService(uid: user.uid).custData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  CustData cust = snapshot.data!;
+                  return Column(
+                    children: [
+                      Text(cust.address),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      Text("Something still doesn't work as a customer"),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }));
+    } else //if user is a supplier
+      return Form(
+          child: StreamBuilder<SupplierData>(builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              Text(widget.details.userType),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton.icon(
+                  //can also use textbutton
+                  onPressed: () async {
+                    await _auth.signOut();
+                    int count = 1;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  },
+                  icon: Icon(Icons.person),
+                  label: Text("Logout"),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      minimumSize: const Size(
+                        200,
+                        50,
+                      ),
+                      textStyle:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Text("Something still doesn't work as a supplier");
+        }
+      }));
+    /* return (widget.details.userType == "customer")
         ? StreamBuilder<CustData>(
             //initialData: null,
             stream: DatabaseService(uid: user.uid).custData,
@@ -150,14 +254,11 @@ class _SettingsFormState extends State<SettingsForm> {
               if (snapshot.hasData) {
                 print("we are receiving data for customer");
                 //user data of customer created to return stream data of the customer account
-                CustData userData = snapshot.data!;
+                //CustData userData = snapshot.data!;
                 return Form(
                   key: _formKey,
                   child: Column(children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text("Update form settings"),
-                    ),
+                    Text("Update form settings"),
                     Align(
                       alignment: Alignment.center,
                       child: InkWell(
@@ -169,12 +270,12 @@ class _SettingsFormState extends State<SettingsForm> {
                                 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAM1BMVEXk5ueutLeqsbTn6eqpr7PJzc/j5ebf4eLZ3N2wtrnBxsjN0NLGysy6v8HT1tissra8wMNxTKO9AAAFDklEQVR4nO2d3XqDIAxAlfivoO//tEOZWzvbVTEpic252W3PF0gAIcsyRVEURVEURVEURVEURVEURVEURVEURVEURVEURflgAFL/AirAqzXO9R7XNBVcy9TbuMHmxjN6lr92cNVVLKEurVfK/zCORVvW8iUBnC02dj+Wpu0z0Y6QlaN5phcwZqjkOkK5HZyPAjkIjSO4fIdfcOwFKkJlX4zPu7Ha1tIcwR3wWxyFhRG6g4Je0YpSPDJCV8a2Sv2zd1O1x/2WMDZCwljH+clRrHfWCLGK8REMiql//2si5+DKWKcWeAGcFMzzNrXC/0TUwQ2s6+LhlcwjTMlYsUIQzPOCb7YBiyHopyLXIEKPEkI/TgeuiidK/R9FniUDOjRDpvm0RhqjMyyXNjDhCfIMYl1gGjIMIuYsnGEYRMRZOMMunaLVwpWRW008v6fYKDIzxCwVAeNSO90BJW6emelYBRF/kHpYGVaoxTDAaxOFsfP9y8hpJ4xd7gOcij7JNGQ1EYFgkPJa1jQEiYZXRaRINKxSDUW9n+FT82lSKadkiru9/4XPqSLWOekGPoY05TAvLm9orm+YWuwHoBHkZKijNBJGmeb61eL6Ff/6q7bLr7yvv3vKGhpDRjvgjGaPz+gUg6YgcvpyAR2FIZ9U6nEEyZRTovmEU32KichpGn7C17XrfyH9gK/c0CMP05HZIM2uf9sEveizKveBy9/6Qt7o89ne33D525cfcIMW6ab+TMEukQbQbu+xu7X3A9bChmWaCeAkG17bpntwXgWxHaMzGPmUaR5dQZiKqRVeUZ3047fi3nAu28h4CHxCsZAgmEH8Y27jJAhm8c+5RQzRQNVGhVFSfxOYIjp/pP7RxzjevYXVGf4eLt+BJ1vCuLuLkrgABgCGXZ2wik5uty+oBvNirI6mkzhAf4Gsb58Hcm67Jzd+KwD10BYPLL3e0MjvKrgAULnOfveF/O4N2Xb9BZom3gJes3F9X5Zze8/6Yt09b4CrqsEjUv8oFBaR2rl+6CZr2xVrp24o/WitBKuGrrpl1+bFkmK2qXTON4VpbdfLa7o7y/WdLxG7lm2Lqh2clOwTegbvc/vj2U78CwhA87Bn8G5Nk3eOb0Nsr9flz3sG78UUtue4kpv1xvjg3TMay62BMlTlP+vrOMnJsRmt/ze0jsfkPPYdAH57hK+34PeOyc8XIXu5xT2HsUkdZz+adwg8HGFfQ3K5jtDvbUiO4Di9/ywHGrL88pDizZ++oTp+an+SMX/ndymUCwmHMdO7yuOx83pUx/eEMU0AvxWndwgidAqOZ8ypCwdEfvvEo6D9HwpA8wzvmOJEqAg9ySu8g4x0Hb9hSB/BANEKJ+LbPBU0lzbAJs4xt1AoshKkUGQmiH8/jJ0gdhTTLmSegHlPE0oOdXALnqDjKYh3px//fSgSWG8UqfrrIICzYYSJXRr9BSPbpNzw7gBjKjKOYI7ReIGqQRIap5+5MdjyvuDkExvGeXSlONWZAP3/AZBwJohU7QJRGU+cTVH18ELmRPNBmibW6MT/k1b0XhdkRBvyT6SB6EYv/GvhSmRNpGngRULsAlxMCGNXp7w3FfdEbTEEDdLI9TdIKRUzUesa3I461ER8cpNT7gMRhpKmYVS9ELOgCUQsa4SsulciKiLbY+AnHD8cpuhISsnxpamI84sbDq9qYJgf8wiiOBrC7Ml7M7ZECCqKoiiKoiiKoiiKoijv5AvJxlZRyNWWLwAAAABJRU5ErkJggg==')),
                       ),
                     ),
-                    ClipOval(
+                    /* ClipOval(
                         child: userData.url != "customer" &&
                                 userData.url != "supplier"
                             ? Image.asset('users/' + userData.url + ".png")
-                            : Image.network(userData.url)),
-                    const SizedBox(
+                            : Image.network(userData.url)),*/
+                    /* const SizedBox(
                       height: 20.0,
                     ),
                     Expanded(
@@ -229,7 +330,7 @@ class _SettingsFormState extends State<SettingsForm> {
                         divisions: 8, //spaces in between 1-9
                       ),
                     ),
-
+*/
                     Expanded(
                       flex: 2,
                       child: ElevatedButton(
@@ -369,17 +470,17 @@ class _SettingsFormState extends State<SettingsForm> {
                             divisions: 8, //spaces in between 1-9
                           ),
                         ),
-
+*/
                         Expanded(
                           flex: 1,
                           child: ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 uploadFile();
-                                /*await DatabaseService(uid: user.uid).updateCustData(
-                                "mr.meeseeks", userData.age, "SFO");
-                            /*(_price ?? userData.price).toInt() "pth");*/*/
-                                Navigator.pop(context);
+                                //    await DatabaseService(uid: user.uid).updateCustData(
+                                ///   "mr.meeseeks", userData.age, "SFO");
+                                //   (_price ?? userData.price).toInt() "pth");
+                                //       Navigator.pop(context);
                               } else {}
                             },
                             child: Text("Purchase"),
@@ -388,108 +489,13 @@ class _SettingsFormState extends State<SettingsForm> {
                                   Colors.green),
                             ),
                           ),
-                        ),*/
+                        ),
                       ]),
                     );
                   } else {
                     return Loading();
                   }
                 })
-            : Text('We have no userType stream');
+            : Text('We have no userType stream');*/
   }
 }
-/*StreamBuilder<SupplierData>(
-            stream: DatabaseService(uid: user!.uid).supData,
-            // : DatabaseService(uid: user!.uid).supData,
-            //this creates a databaseservice onject with our current user id
-            builder: (context, snapshot) {
-              //nothing to do with firebase, this is a built influtter stream
-              if (snapshot.hasData) {
-                SupplierData userData = snapshot.data!;
-                return Form(
-                  key: _formKey,
-                  child: Column(children: [
-                    const Expanded(
-                      child: Text("Update form settings"),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: TextFormField(
-                          initialValue: userData.name,
-                          decoration: textInputDecoration.copyWith(
-                              hintText: "Ënter your name"),
-                          validator: (val) =>
-                              val!.isEmpty ? "Enter a username" : null,
-                          onChanged: (val) =>
-                              setState(() => _currentName = val)),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-
-                    //slider
-
-                    Expanded(
-                      flex: 3,
-                      child: DropdownButtonFormField(
-                        decoration:
-                            textInputDecoration, //(hintText: "Select icening"),
-                        value: _currentIcening,
-                        items: _icening
-                            .map((String item) => DropdownMenuItem<String>(
-                                child: Text(item), value: item))
-                            .toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            this._currentIcening = value!;
-                          });
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: Slider(
-                        activeColor: Colors.brown, //shade the slider
-                        inactiveColor: Colors.brown[userData.age],
-                        value: userData.age.toDouble(),
-                        onChanged: (val) {
-                          setState(() {
-                            _age = val.toInt(); //rounds double to neaerest int
-                          });
-                        },
-                        min: 100,
-                        max: 900,
-                        divisions: 8, //spaces in between 1-9
-                      ),
-                    ),
-
-                    Expanded(
-                      flex: 1,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            print(_currentName);
-                            print(_currentIcening);
-                            print(_age);
-                            /*await DatabaseService(uid: user.uid).updateCustData(
-                                "mr.meeseeks", userData.age, "SFO");
-                            /*(_price ?? userData.price).toInt() "pth");*/*/
-                            Navigator.pop(context);
-                          } else {}
-                        },
-                        child: Text("Purchase"),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.green),
-                        ),
-                      ),
-                    ),
-                  ]),
-                );
-              } else {
-                return Loading();
-              }
-            })*/
-// Text(" Bhoi u a supplier! ");

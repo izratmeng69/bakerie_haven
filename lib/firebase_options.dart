@@ -56,7 +56,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCcr1shPb6Jz1f3BHtl1KhC1Edatg8IWcs',
-    appId: '1:812072198825:android:e98a19ead7df79c527ffb8',
+    appId: '1:812072198825:android:adcc2297049b0b0527ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',
@@ -65,7 +65,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD5b5rgxMEMpJ1wOZY-psl13ixFQ2PmeGs',
-    appId: '1:812072198825:ios:af45ef3725878ce227ffb8',
+    appId: '1:812072198825:ios:c25b12b027322ab627ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',
@@ -76,7 +76,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyD5b5rgxMEMpJ1wOZY-psl13ixFQ2PmeGs',
-    appId: '1:812072198825:ios:6602a9415b27f75a27ffb8',
+    appId: '1:812072198825:ios:a5485fa20077ea0d27ffb8',
     messagingSenderId: '812072198825',
     projectId: 'bakerie-827e6',
     databaseURL: 'https://bakerie-827e6-default-rtdb.firebaseio.com',

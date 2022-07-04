@@ -47,14 +47,13 @@ class MyApp extends StatelessWidget {
     //CurrentUser curr = CurrentUser(uid: "1");
     //wrap material app with streamrpovider that changes app
     //depending on changesin the authentication service -lo/sinout/in
-    return FutureBuilder(builder: (context, snapshot) {
-      return StreamProvider<CurrentUser?>.value(
-        initialData: null,
-        //variable curr wascreated
+    return StreamProvider<CurrentUser?>.value(
+      initialData: null,
+      //variable curr wascreated
 
-        value: AuthService().user, //stream to listen to
-        child: MaterialApp(
-            /* theme: ThemeData(
+      value: AuthService().user, //stream to listen to
+      child: MaterialApp(
+          /* theme: ThemeData(
               // Define the default brightness and colors.
               brightness: Brightness.dark,
               primaryColor: Colors
@@ -73,10 +72,9 @@ class MyApp extends StatelessWidget {
                 bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Georgia'),
               ),
             ),*/
-            home:
-                Wrapper()), //Dashboard()), //Wrapper()), //SeeMoreDropDown()), //
-      );
-    });
+          home:
+              Wrapper()), //Dashboard()), //Wrapper()), //SeeMoreDropDown()), //
+    );
   }
 }
 

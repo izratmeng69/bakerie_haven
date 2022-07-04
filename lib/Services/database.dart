@@ -10,7 +10,7 @@ class DatabaseService {
   final String? uid;
   DatabaseService({this.uid});
 
-  DatabaseService.withoutUID() : uid = "";
+  // DatabaseService.withoutUID() : uid = "";
 
   final CollectionReference orderCollection =
       FirebaseFirestore.instance.collection('Orders');
@@ -27,10 +27,9 @@ class DatabaseService {
 //adding user data to bakerie app
 
   Future updateCustData(
-      String email, String name, int age, String address, String url) async {
+      String name, int age, String address, String url) async {
     return await custCollection.doc(uid).set({
       'custId': uid,
-      'email': email,
       'name': name,
       'age': age,
       'address': address,
@@ -63,11 +62,6 @@ class DatabaseService {
     }); //will create if doesnt exist
   }
 
-  CustData _custDataFromSnapshot(DocumentSnapshot snapshot) {
-    return CustData(snapshot.get('custId'), snapshot.get('name'),
-        snapshot.get('age'), snapshot.get('address'), snapshot.get('url'));
-  }
-
   Stream<CustData> get custData {
     return custCollection.doc(uid).snapshots().map(_custDataFromSnapshot);
     //Reading from users database, we take our uid as a parameter and maps it to our userdata object
@@ -83,8 +77,12 @@ class DatabaseService {
       snapshot.get('email'),
       snapshot.get('user'),
       snapshot.get('pass'),
-      //snapshot.get('tags'),
     );
+  }
+
+  CustData _custDataFromSnapshot(DocumentSnapshot snapshot) {
+    return CustData(snapshot.get('custId'), snapshot.get('name'),
+        snapshot.get('age'), snapshot.get('address'), snapshot.get('url'));
   }
 
   SupplierData _supplierDataFromSnapshot(DocumentSnapshot snapshot) {
@@ -92,8 +90,6 @@ class DatabaseService {
       snapshot.get('supplierId'),
       snapshot.get('supplierName'),
       snapshot.get('location'),
-      //snapshot.get('rating'),
-      //snapshot.get('age'),
       snapshot.get('url'),
       snapshot.get('myItemCount'),
     );
@@ -135,7 +131,7 @@ class DatabaseService {
 
 //stream of list of products
   Stream<List<Product>> get items {
-    print(" weare viewing item table");
+    print(" wear viewing item table");
     //gets all itemson sale
     return itemCollection.snapshots().map(_productListFromSnapshot);
   }

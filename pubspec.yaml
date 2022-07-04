@@ -41,8 +41,8 @@ dependencies:
   google_fonts: ^3.0.1
   location: ^4.4.0
   flutter_local_notifications: ^9.6.1
-  #firebase_analytics: ^9.1.12
-  #firebase_crashlytics: ^2.8.4
+  firebase_analytics: ^9.1.12
+  firebase_crashlytics: ^2.8.4
 
 dev_dependencies:
   flutter_test:

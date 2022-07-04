@@ -1,15 +1,18 @@
 # This is a generated file; do not edit or check into version control.
-cloud_firestore=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.1.18/
-cloud_firestore_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-2.6.17/
+cloud_firestore=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.2.1/
+cloud_firestore_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-2.6.19/
 file_picker=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.6.1/
-firebase_auth=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.20/
-firebase_auth_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.17/
-firebase_core=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.18.0/
+firebase_analytics=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-9.1.12/
+firebase_analytics_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_analytics_web-0.4.0+17/
+firebase_auth=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.4.1/
+firebase_auth_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.19/
+firebase_core=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.19.1/
 firebase_core_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.6/
-firebase_database=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database-9.0.16/
-firebase_database_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database_web-0.2.0+15/
-firebase_storage=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.2.18/
-firebase_storage_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.17/
+firebase_crashlytics=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_crashlytics-2.8.4/
+firebase_database=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database-9.0.18/
+firebase_database_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database_web-0.2.0+17/
+firebase_storage=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.3.1/
+firebase_storage_web=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.19/
 flutter_local_notifications=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-9.6.1/
 flutter_plugin_android_lifecycle=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.6/
 geolocator=/Users/DELL/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator-9.0.0/

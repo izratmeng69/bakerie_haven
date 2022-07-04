@@ -38,10 +38,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 //function created here becausewe need access to cntext
-    final user = Provider.of<CurrentUser?>(context);
-    print("user at homepage is+" + user!.uid);
+    final user = Provider.of<CurrentUser>(context);
+    print("user at homepage is+" + user.uid);
 
-    return StreamBuilder<CurrentLoginDetails?>(
+    return StreamBuilder<CurrentLoginDetails>(
         stream: DatabaseService(uid: user.uid).details,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -49,8 +49,6 @@ class _HomeState extends State<Home> {
             return
                 //Center(child: Text(" You are a " + userDetails.userType)),
                 Test(curr: userDetails);
-
-            ;
           } else {
             return Loading();
           }
@@ -99,7 +97,7 @@ class _TestState extends State<Test> {
           });
     }
 
-    final user = Provider.of<CurrentUser?>(context);
+    final user = Provider.of<CurrentUser>(context);
     if (widget.curr == null) {
       return Container(child: Center(child: Text("details wanst retrieved")));
     }
@@ -133,9 +131,8 @@ class _TestState extends State<Test> {
 
                 value: //_isQueried == false
                     widget.curr.userType == "customer"
-                        ? DatabaseService(uid: user!.uid).items
-                        : DatabaseService(uid: user!.uid)
-                            .myItems, //expensive(),
+                        ? DatabaseService(uid: user.uid).items
+                        : DatabaseService(uid: user.uid).myItems, //expensive(),
                 child: Scaffold(
                   drawer: NavBar(
                       widget.curr), // new Container(color: Colors.black),

@@ -130,7 +130,7 @@ class _AuthenticateState extends State<Authenticate> {
                                             _type = "customer";
                                             _tapped = true;
                                             _currentOpacity = 0;
-
+                                            print(_type);
                                             print(" index at 0 clicked");
                                           });
                                         } else if (index == 1) {

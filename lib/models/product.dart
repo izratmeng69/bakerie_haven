@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:firebase_storage/firebase_storage.dart';
 
 class Product {
@@ -8,13 +7,6 @@ class Product {
   final String prodName;
   final int price;
   List tags;
-  //final List<dynamic> category;
-  //final List<dynamic> tag;
-
-  //zfinal FirebaseFile file;
-  //final int quantity;
-
-  //AssetImage image;
 
   Product(
     this.prodId,
@@ -22,14 +14,12 @@ class Product {
     this.prodName,
     this.price,
     this.tags,
-    /*this.category, this.tag,*/
-  ); //.itemId, this.quantity);
+  );
 }
 
 class Supplies {
   final String description;
   final String itemId;
-
   final String itemName;
   final int price;
   Supplies(this.itemId, this.itemName, this.price, this.description);
@@ -51,8 +41,7 @@ class SupplierData {
   //final int age;
   final String url;
   final int count;
-  SupplierData(this.uid, this.name, this.location,
-      /*this.rating, this.age, */ this.url, this.count);
+  SupplierData(this.uid, this.name, this.location, this.url, this.count);
 }
 
 class CustData {
@@ -69,15 +58,10 @@ class CurrentLoginDetails {
   final String email;
   final String userType;
   final String pw;
-  //final List tags;
   CurrentLoginDetails(
     this.uid,
     this.email,
     this.userType,
     this.pw,
-    /*this.tags*/
   );
 }
-
-
-//wasnt used for creating objects from query
