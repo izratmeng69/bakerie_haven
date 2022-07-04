@@ -47,7 +47,7 @@ class SupplierData {
 class CustData {
   final String custId;
   final String name;
-  final int age;
+  final double age; //changed from integer
   final String address;
   final String url;
   CustData(this.custId, this.name, this.age, this.address, this.url);

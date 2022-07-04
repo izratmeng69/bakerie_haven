@@ -154,14 +154,26 @@ class _TestState extends State<Test> {
                     actions: <Widget>[
                       new Container(),
                       Expanded(
-                          flex: 3,
+                          flex: 1,
                           child: SizedBox(
                             height: 20,
                             width: 100,
                           )),
                       Expanded(
-                        //Settings
                         flex: 4,
+                        child: IconButton(
+                          onPressed: () {
+                            showSearch(
+                              context: context,
+                              delegate: MySearchDelegate(),
+                            );
+                          },
+                          icon: Icon(Icons.search),
+                        ),
+                      ),
+                      Expanded(
+                        //Settings
+                        flex: 2,
                         child: TextButton.icon(
                             onPressed: () {
                               _showSettingsPanel();
@@ -231,7 +243,58 @@ class _TestState extends State<Test> {
               )
             : Dashboard());
   }
-} //end of homepage and test page
+}
+
+class MySearchDelegate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    // throw UnimplementedError();
+    [
+      //clears all the text in search
+      IconButton(
+          onPressed: () {
+            if (query == '')
+              close(context, null);
+            else
+              query = '';
+          },
+          icon: Icon(Icons.clear_all_outlined))
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    // throw UnimplementedError();
+    return IconButton(
+        onPressed: () {
+          close(context, null); //closes search
+        },
+        icon: Icon(Icons.back_hand));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    return Container();
+    // throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+    // throw UnimplementedError();
+    List<String> suggestions = [
+      'Chocolate',
+      'Puff',
+      'Ice Cream',
+      'Cake',
+      'Savory',
+    ];
+    return Container();
+  }
+}
 
 ///extra code
 /*Flexible(
