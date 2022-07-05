@@ -44,7 +44,7 @@ class _ProductsListState extends State<ProductsList> {
     else {
 //and we are displaying the item images of that same item index from the storage
       return Flexible(
-        flex: 5,
+        flex: 3,
         child: Container(
           //Conatiner do not need size within flexible
           child: FutureBuilder<List<FirebaseFile>>(
