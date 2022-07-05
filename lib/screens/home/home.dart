@@ -22,6 +22,9 @@ import 'package:cool_nav/cool_nav.dart';
 //adding cool nav plugin for flipxbox animated navbar
 import 'package:geolocator/geolocator.dart';
 import 'package:bakerie_haven/widgets/navigation/search_bar.dart'; //we added permissions for this plugin in main/androidmanifest.xml
+import 'package:bakerie_haven/models/firebase_file.dart';
+import 'package:bakerie_haven/Services/firebase_api_storage.dart';
+import 'package:bakerie_haven/screens/home/product_list.dart';
 
 class Home extends StatefulWidget {
   //String type;
@@ -165,7 +168,7 @@ class _TestState extends State<Test> {
                           onPressed: () {
                             showSearch(
                               context: context,
-                              delegate: MySearchDelegate(),
+                              delegate: MySearchDelegate(widget.curr, context),
                             );
                           },
                           icon: Icon(Icons.search),
@@ -209,9 +212,8 @@ class _TestState extends State<Test> {
                   ),
                   body: Column(children: [
                     // Text(widget.curr.),
-                    ProductsList(
-                      details: widget.curr,
-                    ),
+                    ProductsList(details: widget.curr, query: ''),
+                    //  ),
                     /*FutureBuilder(
                           future: _getImage(context, 'avatar1.png'),
                           builder: (context, snapshot) {
@@ -245,11 +247,15 @@ class _TestState extends State<Test> {
   }
 }
 
+//This class is used to get the query variable
+//SearchBar implements stream provider, whose list of products
+//are received as as provider in the products list child using context
 class MySearchDelegate extends SearchDelegate {
+  CurrentLoginDetails details;
+  BuildContext context;
+  MySearchDelegate(this.details, this.context);
   @override
   List<Widget>? buildActions(BuildContext context) {
-    // TODO: implement buildActions
-    // throw UnimplementedError();
     [
       //clears all the text in search
       IconButton(
@@ -257,7 +263,7 @@ class MySearchDelegate extends SearchDelegate {
             if (query == '')
               close(context, null);
             else
-              query = '';
+              query = details.email;
           },
           icon: Icon(Icons.clear_all_outlined))
     ];
@@ -275,10 +281,25 @@ class MySearchDelegate extends SearchDelegate {
   }
 
   @override
+  final futureFiles = FirebaseApi.listAll('files/'); //gets
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
-    return Container();
-    // throw UnimplementedError();
+    return // Center(child: Text(query));
+        StreamProvider<List<Product>>.value(
+      initialData: [],
+      value: //_isQueried == false
+          details.userType == "customer"
+              ? DatabaseService(uid: details.uid).items
+              : DatabaseService(uid: details.uid).myItems, //expensive(),
+      child: Column(
+        children: [
+          Expanded(
+            child:
+                Container(child: ProductsList(details: details, query: query)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -297,6 +318,10 @@ class MySearchDelegate extends SearchDelegate {
         itemBuilder: (context, index) {
           final suggestion = suggestions[index];
           return ListTile(
+            onTap: () {
+              query = suggestion;
+              showResults(context);
+            },
             title: Text(suggestion),
           );
         });

@@ -13,7 +13,9 @@ import 'package:bakerie_haven/screens/home/image_page.dart';
 class ProductsList extends StatefulWidget {
   //const ProductsList({Key? key}) : super(key: key);
   CurrentLoginDetails details;
-  ProductsList({Key? key, required this.details}) : super(key: key);
+  String query; //here
+  ProductsList({Key? key, required this.details, required this.query})
+      : super(key: key);
   @override
   State<ProductsList> createState() => _ProductsListState();
 }
@@ -28,6 +30,10 @@ class _ProductsListState extends State<ProductsList> {
         'files/'); //gets all links, filename etc from storage, of which we will show in a future builder when we return it as a widget
   }
 
+  Future<void> _refresh() async {
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     final products = Provider.of<List<Product>>(
@@ -37,87 +43,99 @@ class _ProductsListState extends State<ProductsList> {
       return (Text("Failed to receive products list"));
     else {
 //and we are displaying the item images of that same item index from the storage
-      return Expanded(
-        flex: 3,
-        child: FutureBuilder<List<FirebaseFile>>(
-          future: futureFiles,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              default:
-                if (snapshot.hasError) {
-                  return Center(child: Text('Some Error occurred!'));
-                } else {
-                  final files = snapshot.data!;
+      return Flexible(
+        flex: 5,
+        child: Container(
+          //Conatiner do not need size within flexible
+          child: FutureBuilder<List<FirebaseFile>>(
+            future: futureFiles,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(child: CircularProgressIndicator());
+                default:
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Some Error occurred!'));
+                  } else {
+                    final files = snapshot.data!;
 
-                  return Column(
-                    //  crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      widget.details.userType == "supplier"
-                          ? buildHeader(products.length)
-                          : SizedBox.shrink(),
-                      const SizedBox(height: 12),
-                      products.length == 0
-                          ? Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 230, 230, 230),
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                      offset: Offset(1, 1),
-                                      blurRadius: 20,
-                                      spreadRadius: 2.0,
-                                      blurStyle: BlurStyle.outer)
-                                ],
-                                border: Border.all(),
-                              ),
-                              //color: Colors.white,
-                              // height: 100,
-                              child: Column(
-                                children: [
-                                  Text(
-                                      'NO products available. This may be an error. Would you like to notify us?',
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          color: Colors.pinkAccent,
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.w800)),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: TextButton.icon(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.call),
-                                        label: Text(
-                                          "send feedback",
-                                          style: TextStyle(
-                                              fontSize: 20.0,
-                                              color: Colors.white,
-                                              fontStyle: FontStyle.italic,
-                                              fontWeight: FontWeight.w800),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Expanded(
-                              flex: 2,
-                              child: ListView.builder(
-                                itemCount: products.length,
-                                itemBuilder: (context, index) {
-                                  return ProductTile(
-                                    index: index,
-                                    prod: products[index],
-                                    file: files[index],
-                                  );
-                                },
-                              ),
-                            )
-                    ],
-                  );
-                }
-            }
-          },
+                    return Column(
+                      //  crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        widget.details.userType == "supplier"
+                            ? buildHeader(products.length)
+                            : SizedBox.shrink(),
+                        const SizedBox(height: 12),
+                        products.length == 0
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 230, 230, 230),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        offset: Offset(1, 1),
+                                        blurRadius: 20,
+                                        spreadRadius: 2.0,
+                                        blurStyle: BlurStyle.outer)
+                                  ],
+                                  border: Border.all(),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                        'NO products available. This may be an error. Would you like to notify us?',
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            color: Colors.pinkAccent,
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w800)),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: TextButton.icon(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.call),
+                                          label: Text(
+                                            "send feedback",
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.white,
+                                                fontStyle: FontStyle.italic,
+                                                fontWeight: FontWeight.w800),
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Flexible(
+                                flex: 2,
+                                child: RefreshIndicator(
+                                  onRefresh: _refresh,
+                                  child: ListView.builder(
+                                      itemCount: products.length,
+                                      itemBuilder: (context, index) {
+                                        if (products[index]
+                                                .prodName
+                                                //  .toLowerCase()
+                                                .contains(widget.query) ||
+                                            products[index]
+                                                .tags
+                                                .contains(widget.query)) {
+                                          return ProductTile(
+                                            index: index,
+                                            prod: products[index],
+                                            file: files[index],
+                                          );
+                                        } else
+                                          return SizedBox();
+                                      }),
+                                ),
+                              )
+                      ],
+                    );
+                  }
+              }
+            },
+          ),
         ),
       );
     }

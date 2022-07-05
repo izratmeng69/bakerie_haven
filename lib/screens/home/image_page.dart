@@ -2,6 +2,7 @@ import 'package:bakerie_haven/Services/firebase_api_storage.dart';
 import 'package:bakerie_haven/models/firebase_file.dart';
 import 'package:flutter/material.dart';
 import 'package:bakerie_haven/models/product.dart';
+import 'package:bakerie_haven/screens/home/image_page.dart';
 
 class ImagePage extends StatelessWidget {
   final FirebaseFile file;
@@ -35,22 +36,32 @@ class ImagePage extends StatelessWidget {
             const SizedBox(width: 12),
           ],
         ),
-        body: Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              elevation: 8,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  file.url,
-                  // height: 300,
-                  fit: BoxFit.cover,
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 8,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      file.url,
+                      // height: 300,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
+              /* Column(
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(prod.prodName))
+                    ],
+                  ),*/
             ),
-          ),
+          ],
         ));
   }
 }

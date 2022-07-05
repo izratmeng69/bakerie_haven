@@ -50,14 +50,15 @@ class DatabaseService {
     }); //will create if doesnt exist
   }
 
-  Future updateSupplierUserData(
-      String email, String username, String location, String url) async {
+  Future updateSupplierUserData(String email, String username, String location,
+      String url, int count) async {
     return await supCollection.doc(uid).set({
       'supplierId': uid,
-      'email': email,
+      //'email': email,
       'supplierName': username,
       'location': location,
       'url': url,
+      'myItemCount': count
       // 'ref':ref,
     }); //will create if doesnt exist
   }

@@ -94,7 +94,7 @@ class AuthService {
 
         //create new document using id given byy firebase auth
         await DatabaseService(uid: user.uid)
-            .updateSupplierUserData(email, "UserOne", "SanDo", url);
+            .updateSupplierUserData(email, "UserOne", "SanDo", url,0);
         await DatabaseService(uid: user.uid).updateUserData(
           email,
           password,
