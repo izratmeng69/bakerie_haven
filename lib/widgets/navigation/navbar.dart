@@ -6,8 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
 
 class NavBar extends StatefulWidget {
-  CurrentLoginDetails details;
-
+  final CurrentLoginDetails details;
+  //String name;
+  CustData? cust;
+  SupplierData? sup;
   NavBar(this.details);
 
   @override

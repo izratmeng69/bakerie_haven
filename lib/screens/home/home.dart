@@ -51,7 +51,8 @@ class _HomeState extends State<Home> {
             CurrentLoginDetails userDetails = snapshot.data!;
             return
                 //Center(child: Text(" You are a " + userDetails.userType)),
-                Test(curr: userDetails);
+                // Test(curr: userDetails);
+                UserHome(details: userDetails);
           } else {
             return Loading();
           }
@@ -61,6 +62,8 @@ class _HomeState extends State<Home> {
 
 class Test extends StatefulWidget {
   final CurrentLoginDetails curr;
+  CustData? cust;
+  SupplierData? sup;
   //const Test({ Key? key }) : super(key: key);
   Test({required this.curr});
 
@@ -137,8 +140,7 @@ class _TestState extends State<Test> {
                         ? DatabaseService(uid: user.uid).items
                         : DatabaseService(uid: user.uid).myItems, //expensive(),
                 child: Scaffold(
-                  drawer: NavBar(
-                      widget.curr), // new Container(color: Colors.black),
+                  // new Container(color: Colors.black),
                   backgroundColor: Color.fromARGB(255, 138, 59, 31),
                   appBar: AppBar(
                     leading: Builder(builder: (BuildContext context) {
@@ -292,11 +294,9 @@ class MySearchDelegate extends SearchDelegate {
               ? DatabaseService(uid: details.uid).items
               : DatabaseService(uid: details.uid).myItems, //expensive(),
       child: Column(
+        //maybe remove this
         children: [
-          Expanded(
-            child:
-                Container(child: ProductsList(details: details, query: query)),
-          ),
+          ProductsList(details: details, query: query),
         ],
       ),
     );
@@ -329,108 +329,7 @@ class MySearchDelegate extends SearchDelegate {
 }
 
 ///extra code
-/*Flexible(
-         //         flex: 6,
-                  child: SafeArea(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          TextButton.icon(
-                              onPressed: () async {
-                                setState(() => buildRow("Bhaiii", "bhi"));
-                              },
-                              icon: Icon(Icons.import_contacts_rounded),
-                              label: Text("See profiles")),
-                          // 
-                        ],
-                        //ElevatedButton(child: Image(image: AssetImage()),)
-                      ),
-                    ),
-                  )),
-Expanded(
-              flex: 3,
-              child: Wrap(children: <Widget>[
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                  ),
-                  child: Container(
-                    color: Colors.grey,
-                    width: 700,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          height: 200,
-                          width: 500,
-                          color: Colors.blue,
-                        ),
-                        Container(
-                          height: 100,
-                          width: 300,
-                          color: Colors.red,
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              color: Colors.yellow,
-                              height: 100,
-                              width: 100,
-                              child: RichText(
-                                text: const TextSpan(
-                                    text: " dog",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight:
-                                          FontWeight.w700, //FontWeight.bold,
-                                    ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: " See how much I've grown rat",
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                        ),
-                                      )
-                                    ]),
-                              ),
-                            )),
-                        Positioned(
-                            bottom: 0,
-                            left: 0,
-                            child: Container(
-                              color: Colors.green,
-                              height: 100,
-                              width: 100,
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            1, 10, 10, 0),
-                                        child: Icon(
-                                          Icons.developer_mode_sharp,
-                                        ),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: '  Tinkle is Powered By:',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-            ),*/
+
 abstract class AnimationControllerState<T extends StatefulWidget>
     extends State<T> with SingleTickerProviderStateMixin {
   AnimationControllerState(this.animationDuration);
@@ -445,6 +344,7 @@ abstract class AnimationControllerState<T extends StatefulWidget>
   }
 }
 
+//Shake the bell icon
 class ShakeWidget extends StatefulWidget {
   const ShakeWidget({
     Key? key,
@@ -506,5 +406,172 @@ class ShakeWidgetState extends AnimationControllerState<ShakeWidget> {
         );
       },
     );
+  }
+}
+
+class UserHome extends StatefulWidget {
+  final CurrentLoginDetails details;
+  UserHome({super.key, required this.details});
+
+  @override
+  State<UserHome> createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
+  final AuthService _auth = AuthService();
+  final _formKeyUserHome = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    /*return Scaffold(
+      //drawer:NavBar()
+      appBar: AppBar(),
+      //  body:
+    );
+  }*/
+    if (widget.details.userType == "customer") {
+      return Form(
+          key: _formKeyUserHome,
+          child: StreamBuilder<CustData?>(
+              stream: DatabaseService(uid: widget.details.uid).custData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  CustData cust = snapshot.data!;
+                  return Column(
+                    children: [
+                      Text(cust.address),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  //error reading cuistomer data
+                  return Column(
+                    children: [
+                      Text("Something still doesn't work as a customer"),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );
+                } /*else if (snapshot.hasError) {
+                  return Column(
+                    children: [
+                      Text(" There is an error in stream builder"),
+                    
+                    ],
+                  );
+                }*/
+              }));
+    } else {
+      //if the user is a supplier
+      return Form(
+          child: StreamBuilder<SupplierData>(
+              stream: DatabaseService(uid: widget.details.uid).supData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  SupplierData sup = snapshot.data!;
+                  return /*Column(
+                    children: [
+                      Text(sup.name),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: const Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );*/
+                      Test(curr: widget.details);
+                } else {
+                  //error reading supplier info
+                  return Column(
+                    children: [
+                      Text("Something still doesn't work as a supplier"),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }));
+    }
   }
 }

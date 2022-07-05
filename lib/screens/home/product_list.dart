@@ -63,7 +63,14 @@ class _ProductsListState extends State<ProductsList> {
                       //  crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         widget.details.userType == "supplier"
-                            ? buildHeader(products.length)
+                            ? Row(
+                                children: [
+                                  buildHeader(products.length),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.plus_one)),
+                                ],
+                              )
                             : SizedBox.shrink(),
                         const SizedBox(height: 12),
                         products.length == 0

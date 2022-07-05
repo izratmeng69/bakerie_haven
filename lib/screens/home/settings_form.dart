@@ -179,6 +179,7 @@ class _SettingsFormState extends State<SettingsForm> {
                     ],
                   );
                 } else {
+                  //error reading cuistomer data
                   return Column(
                     children: [
                       Text("Something still doesn't work as a customer"),
@@ -211,35 +212,13 @@ class _SettingsFormState extends State<SettingsForm> {
                   return Column(
                     children: [
                       Text(" There is an error in stream builder"),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton.icon(
-                          //can also use textbutton
-                          onPressed: () async {
-                            await _auth.signOut();
-                            int count = 1;
-                            Navigator.of(context).popUntil((_) => count++ >= 2);
-                          },
-                          icon: Icon(Icons.person),
-                          label: Text("Logout"),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20),
-                              minimumSize: const Size(
-                                200,
-                                50,
-                              ),
-                              textStyle: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
+                    
                     ],
                   );
                 }*/
               }));
     } else {
-      //user is a supplier
+      //if the user is a supplier
       return Form(
           child: StreamBuilder<SupplierData>(
               stream: DatabaseService(uid: widget.details.uid).supData,
@@ -275,6 +254,7 @@ class _SettingsFormState extends State<SettingsForm> {
                     ],
                   );
                 } else {
+                  //error reading supplier info
                   return Column(
                     children: [
                       Text("Something still doesn't work as a supplier"),
@@ -309,8 +289,7 @@ class _SettingsFormState extends State<SettingsForm> {
   }
 }
   
- 
-       /* : (widget.details.userType == "supplier")
+/* : (widget.details.userType == "supplier")
             ? StreamBuilder<SupplierData>(
                 stream: DatabaseService(uid: user.uid).supData,
                 // : DatabaseService(uid: user!.uid).supData,

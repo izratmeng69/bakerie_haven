@@ -38,11 +38,12 @@ class ImagePage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Expanded(
+            Flexible(
+              flex: 4,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Card(
-                  elevation: 8,
+                  elevation: 20,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
@@ -61,6 +62,7 @@ class ImagePage extends StatelessWidget {
                     ],
                   ),*/
             ),
+            Flexible(flex: 1, child: Text(''))
           ],
         ));
   }
