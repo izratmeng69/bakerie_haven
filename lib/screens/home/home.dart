@@ -292,7 +292,14 @@ class MySearchDelegate extends SearchDelegate {
       'Cake',
       'Savory',
     ];
-    return Container();
+    return ListView.builder(
+        itemCount: suggestions.length,
+        itemBuilder: (context, index) {
+          final suggestion = suggestions[index];
+          return ListTile(
+            title: Text(suggestion),
+          );
+        });
   }
 }
 
