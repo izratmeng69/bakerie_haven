@@ -28,7 +28,7 @@ class SettingsForm extends StatefulWidget {
 }
 
 class _SettingsFormState extends State<SettingsForm> {
-  final _formKey = GlobalKey<FormState>();
+  //final _formKey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
   //SharedPreferences? sharedPreferences;
   //String? _type = "unknown";
@@ -122,13 +122,13 @@ class _SettingsFormState extends State<SettingsForm> {
   //upload file from android , ios or web
   Future uploadFile() async {
     if (myFile == null) return;
-    final fileName = basename(myFile!.path);
+    final fileName =
+        widget.details.uid.toString() + '.png'; //basename(myFile!.path);
     final destination = 'profiles/$fileName';
-
-    FirebaseApi.uploadFile(destination, myFile!);
+    print(destination);
+    //FirebaseApi.uploadFile(destination, myFile!);
   }
 
-  @override
   Widget build(BuildContext context) {
     //final user = Provider.of<CurrentUser>(context);
     //final Future
@@ -144,7 +144,7 @@ class _SettingsFormState extends State<SettingsForm> {
     //return Text(");
     if (widget.details.userType == "customer") {
       return Form(
-          key: _formKey,
+          //  key: _formKey,
           child: StreamBuilder<CustData?>(
               stream: DatabaseService(uid: widget.details.uid).custData,
               builder: (context, snapshot) {

@@ -4,8 +4,9 @@ import "package:flutter/material.dart";
 import 'package:bakerie_haven/Services/auth.dart';
 import 'package:bakerie_haven/shared/constants.dart';
 import 'package:bakerie_haven/shared/loading.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:bakerie_haven/shared/session.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Authenticate extends StatefulWidget {
   //final Function updateVariables;
@@ -21,7 +22,7 @@ class _AuthenticateState extends State<Authenticate> {
 
   //basic connection to firebase auth
   final _formKey = GlobalKey<FormState>();
-  //   to identify our form with this globalform state key
+  //   to identify our forms with this globalform state key
   bool loading = false;
   String email = 'none';
   String password = 'pass';
@@ -66,14 +67,15 @@ class _AuthenticateState extends State<Authenticate> {
                 ],
                 backgroundColor: Colors.blue[500],
               ),*/
-              body: Align(
-                alignment: Alignment.topCenter,
+              body: Container(
+                // alignment: Alignment.topCenter,
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.topCenter,
+                    Flexible(
+                      flex: 3,
+                      //alignment: Alignment.topCenter,
                       child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                           child: Visibility(
                             visible: !switchValue,
                             child: _tapped == false
@@ -97,7 +99,8 @@ class _AuthenticateState extends State<Authenticate> {
                         alignment: Alignment.topCenter,
                         child: Container(
                           //width: 300,
-                          height: 200, //not
+                          height: 100, //not
+
                           child: ListView.builder(
                               //created scrollable items list
                               shrinkWrap: true, //aligns to center
@@ -109,50 +112,50 @@ class _AuthenticateState extends State<Authenticate> {
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(200.0)),*/
-                                    Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CircleAvatar(
-                                    foregroundColor: Colors.black12,
-                                    backgroundImage: index == 0
-                                        ? NetworkImage(
-                                            'https://www.efficy.com/wp-content/uploads/2019/03/new-customer.png')
-                                        : NetworkImage(
-                                            'https://cdn0.iconfinder.com/data/icons/miscellaneous-14-color-shadow/128/deliverable_deliver_courier_occupation_package_parcel_supplier-1024.png'),
-                                    radius: 90,
+                                    CircleAvatar(
+                                  //foregroundColor: Colors.black12,
 
-                                    //  ),
-                                    child: InkWell(
-                                      splashColor: Colors.black12,
-                                      //card foreach type
-                                      onTap: () {
-                                        if (index == 0) {
-                                          setState(() {
-                                            _type = "customer";
-                                            _tapped = true;
-                                            _currentOpacity = 0;
-                                            print(_type);
-                                            print(" index at 0 clicked");
-                                          });
-                                        } else if (index == 1) {
-                                          setState(() {
-                                            _type = "supplier";
-                                            _tapped = true;
-                                            _currentOpacity = 0;
-                                            print(" index at 1 clicked");
-                                          });
-                                        }
-                                      },
+                                  radius: 60,
+
+                                  //  ),
+                                  child: InkWell(
+                                    child: ClipOval(
+                                      child: index == 0
+                                          ? Image.network(
+                                              'https://images.assetsdelivery.com/compings_v2/ihorzigor/ihorzigor1803/ihorzigor180300004.jpg')
+                                          : Image.network(
+                                              'https://cdn0.iconfinder.com/data/icons/miscellaneous-14-color-shadow/128/deliverable_deliver_courier_occupation_package_parcel_supplier-1024.png',
+                                              // height: 100,
+                                              // width: 100,
+                                            ),
                                     ),
+                                    //splashColor: Colors.black12,
+                                    //card foreach type
+                                    onTap: () {
+                                      if (index == 0) {
+                                        setState(() {
+                                          _type = "customer";
+                                          _tapped = true;
+                                          _currentOpacity = 0;
+                                          print(_type);
+                                          print(" index at 0 clicked");
+                                        });
+                                      } else if (index == 1) {
+                                        setState(() {
+                                          _type = "supplier";
+                                          _tapped = true;
+                                          _currentOpacity = 0;
+                                          print(" index at 1 clicked");
+                                        });
+                                      }
+                                    },
                                   ),
                                 );
                               }),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: BuildForm(context),
-                    ),
+                    BuildForm(context),
                   ],
                 ),
               ),
@@ -161,8 +164,9 @@ class _AuthenticateState extends State<Authenticate> {
   }
 
   Widget BuildForm(BuildContext context) {
+    // final counterBloc = CounterBloc();
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+      padding: const EdgeInsets.fromLTRB(20, 20, 10, 15),
       child: Column(children: [
         Form(
           key: _formKey, //created
@@ -170,6 +174,7 @@ class _AuthenticateState extends State<Authenticate> {
           child: Column(
             children: <Widget>[
               TextFormField(
+                style: Theme.of(context).textTheme.headline6,
                 decoration: textInputDecoration.copyWith(
                     hintText: 'email',
                     hintStyle: TextStyle(color: Colors.black12)),
@@ -181,6 +186,7 @@ class _AuthenticateState extends State<Authenticate> {
                 },
               ),
               TextFormField(
+                style: Theme.of(context).textTheme.headline1,
                 decoration: textInputDecoration.copyWith(
                     hintText: 'password',
                     hintStyle: TextStyle(color: Colors.black12)),
@@ -194,10 +200,11 @@ class _AuthenticateState extends State<Authenticate> {
                 },
               ),
               const SizedBox(
-                height: 40,
+                height: 10,
               ),
               switchValue == false
                   ? TextButton(
+                    
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(5.0),
                         primary: Colors.white,
@@ -279,12 +286,12 @@ class _AuthenticateState extends State<Authenticate> {
           ),
         ),
         SizedBox(
-          height: 20,
+          height: 15,
           child: Text(_error,
               style: const TextStyle(
                 color: Colors.purple,
                 fontWeight: FontWeight.w700,
-                fontSize: 16.0,
+                fontSize: 12.0,
               )),
         ),
         Align(
@@ -294,6 +301,28 @@ class _AuthenticateState extends State<Authenticate> {
             child: buildSwitch(),
           ),
         ),
+        /*Row(
+          children: [
+            /*StreamBuilder(
+                //receiving a stream  from of counterbloc(), and buiulding it into a widget
+                stream: counterBloc.eventStream,
+                builder: (context, snapshot) {
+                  return Text('${snapshot.data}');
+                }),
+            IconButton(
+                onPressed: () {
+                  // _counter++; //to complete separare business logic from our ui,
+                  //we must create another stream controller that updates our counter for us
+                  /*  counterBloc.counterSink.add(
+                      _counter);*/ //this controller only gets the output to our screen,
+                  // this method is better/efficient/faster than setstate as our widget uwi is only updated once,
+                  //except the specifc text widget receiving the data from the the counter stream
+                  counterBloc.eventSink.add(CounterAction
+                      .Increment); //instead of add counter sink of integer, we add event sink to stream, thus sending counteractions event to method, and not ineteger
+                },
+                icon: Icon(Icons.arrow_back)),*/
+          ],
+        ),*/
       ]),
     );
   }

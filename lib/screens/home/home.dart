@@ -5,26 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:bakerie_haven/Services/auth.dart';
 import 'package:bakerie_haven/Services/database.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bakerie_haven/models/product.dart';
-import 'package:bakerie_haven/screens/home/dashboard.dart';
-import 'package:bakerie_haven/screens/home/product_list.dart';
-import 'package:bakerie_haven/screens/home/product_tile.dart';
+import 'package:bakerie_haven/screens/home/location.dart';
+import 'package:bakerie_haven/screens/itemscreens/product_list.dart';
+import 'package:bakerie_haven/screens/itemscreens/product_tile.dart';
 import 'package:bakerie_haven/screens/home/settings_form.dart';
 //import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:bakerie_haven/widgets/navigation/appbar.dart';
-import 'package:bakerie_haven/widgets/navigation/navbar.dart';
+//import 'package:bakerie_haven/widgets/extras/appbar.dart';
+import 'package:bakerie_haven/shared/widgets/extras/navbar.dart';
 import 'package:bakerie_haven/shared/loading.dart';
 import 'package:bakerie_haven/shared/constants.dart';
 //import 'package:bakerie_haven/shared/session.dart';
 import 'package:bakerie_haven/models/currentuser.dart';
-import 'package:cool_nav/cool_nav.dart';
+//import 'package:cool_nav/cool_nav.dart';
 //adding cool nav plugin for flipxbox animated navbar
-import 'package:geolocator/geolocator.dart';
-import 'package:bakerie_haven/widgets/navigation/search_bar.dart'; //we added permissions for this plugin in main/androidmanifest.xml
-import 'package:bakerie_haven/models/firebase_file.dart';
+//import 'package:geolocator/geolocator.dart';
+import 'package:bakerie_haven/shared/widgets/extras/search_bar.dart'; //we added permissions for this plugin in main/androidmanifest.xml
+//import 'package:bakerie_haven/models/firebase_file.dart';
 import 'package:bakerie_haven/Services/firebase_api_storage.dart';
-import 'package:bakerie_haven/screens/home/product_list.dart';
+//import 'package:bakerie_haven/screens/home/product_list.dart';
+import 'notif.dart';
 
 class Home extends StatefulWidget {
   //String type;
@@ -60,12 +61,128 @@ class _HomeState extends State<Home> {
   }
 }
 
+class UserHome extends StatefulWidget {
+  final CurrentLoginDetails details;
+  UserHome({super.key, required this.details});
+
+  @override
+  State<UserHome> createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
+  final AuthService _auth = AuthService();
+  final _formKeyUserHome = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    /*return Scaffold(
+      //drawer:NavBar()
+      appBar: AppBar(),
+      //  body:
+    );
+  }*/
+    print('User type from user home is ' + widget.details.userType);
+    if (widget.details.userType == "customer") {
+      return Form(
+          // key: _formKeyUserHome,
+          child: StreamBuilder<CustData>(
+              stream: DatabaseService(uid: widget.details.uid).custData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  CustData cust = snapshot.data!;
+                  return Test(curr: widget.details, cust: cust);
+                } else {
+                  //error reading cuistomer data
+                  return Column(
+                    children: [
+                      //Text("Something still doesn't work as a customer"),
+                      Loading(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );
+                } /*else if (snapshot.hasError) {
+                  return Column(
+                    children: [
+                      Text(" There is an error in stream builder"),
+                    
+                    ],
+                  );
+                }*/
+              }));
+    } else {
+      print('trying to print supplier data');
+      //if the user is a supplier
+      return Form(
+          child: StreamBuilder<SupplierData>(
+              stream: DatabaseService(uid: widget.details.uid).supData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  SupplierData sup = snapshot.data!;
+                  return Test(curr: widget.details, sup: sup);
+                } else {
+                  //error reading supplier info
+                  return Column(
+                    children: [
+                      // Text("Something still doesn't work as a supplier"),
+                      Loading(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton.icon(
+                          //can also use textbutton
+                          onPressed: () async {
+                            await _auth.signOut();
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          },
+                          icon: Icon(Icons.person),
+                          label: Text("Logout"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              minimumSize: const Size(
+                                200,
+                                50,
+                              ),
+                              textStyle: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }));
+    }
+  }
+}
+
 class Test extends StatefulWidget {
   final CurrentLoginDetails curr;
   CustData? cust;
   SupplierData? sup;
   //const Test({ Key? key }) : super(key: key);
-  Test({required this.curr});
+  Test({required this.curr, this.cust, this.sup});
 
   @override
   State<Test> createState() => _TestState();
@@ -75,7 +192,7 @@ class _TestState extends State<Test> {
   final AuthService _auth = AuthService();
   bool _isQueried = false;
   int _notifCount = 0;
-  final shakeKey = GlobalKey<ShakeWidgetState>();
+  final shakeKey = GlobalKey<ShakeWidgetState>(); //for bell icon
   int _selectedScreenIndex = 0;
   final List _screens = [
     {"screen": Home(), "title": "HOME"},
@@ -91,7 +208,7 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
-    void _showSettingsPanel() {
+    /* void _showSettingsPanel() {
       //this is a built in flutter widget fucntion
       showModalBottomSheet(
           context: context,
@@ -102,47 +219,53 @@ class _TestState extends State<Test> {
             );
           });
     }
-
+*/
     final user = Provider.of<CurrentUser>(context);
     if (widget.curr == null) {
       return Container(child: Center(child: Text("details wanst retrieved")));
     }
-    print("tyhe value we got was " +
-        widget.curr.email +
-        " /n You are a " +
-        widget.curr.userType);
+    print("the value we got freom details was " + widget.curr.userType);
+
+    if (widget.curr.userType == "supplier")
+      print("\nThe location value we got from supplier were " +
+          widget.sup!.location);
+    else
+      print('  We are reading customer, their email is' + widget.curr.email);
     // return //Container(child: Center(child: Text(widget.curr.uid)));
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color.fromARGB(255, 230, 230, 230),
-          elevation: 12.0,
-          currentIndex: _selectedScreenIndex,
-          onTap: _selectScreen,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.red,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: "Settings",
-              backgroundColor: Colors.pinkAccent,
-            )
-          ],
-        ),
-        body: _selectedScreenIndex == 0
-            ? StreamProvider<List<Product>>.value(
-                initialData: [], //was null,
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color.fromARGB(255, 230, 230, 230),
+        elevation: 12.0,
+        currentIndex: _selectedScreenIndex,
+        onTap: _selectScreen,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.red,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+            backgroundColor: Colors.pinkAccent,
+          )
+        ],
+      ),
+      body: _selectedScreenIndex == 0 //home bottom nav item
+          ? StreamProvider<List<Product>>.value(
+              //default list of all products
+              initialData: [], //was null,
 
-                value: //_isQueried == false
-                    widget.curr.userType == "customer"
-                        ? DatabaseService(uid: user.uid).items
-                        : DatabaseService(uid: user.uid).myItems, //expensive(),
-                child: Scaffold(
-                  // new Container(color: Colors.black),
-                  backgroundColor: Color.fromARGB(255, 138, 59, 31),
-                  appBar: AppBar(
+              value: //_isQueried == false
+                  widget.curr.userType == "customer"
+                      ? DatabaseService(uid: user.uid).items
+                      : DatabaseService(uid: user.uid).myItems, //expensive(),
+              child: Scaffold(
+                drawer: NavBar(widget.curr),
+                backgroundColor: Color.fromARGB(255, 138, 59, 31),
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(100.0),
+                  child: AppBar(
                     leading: Builder(builder: (BuildContext context) {
                       //this builder gets rid of default navbar humburger menu icon
                       return IconButton(
@@ -170,24 +293,16 @@ class _TestState extends State<Test> {
                           onPressed: () {
                             showSearch(
                               context: context,
-                              delegate: MySearchDelegate(widget.curr, context),
+                              delegate: MySearchDelegate(
+                                widget.sup,
+                                widget.cust,
+                                widget.curr,
+                                context,
+                              ),
                             );
                           },
                           icon: Icon(Icons.search),
                         ),
-                      ),
-                      Expanded(
-                        //Settings
-                        flex: 2,
-                        child: TextButton.icon(
-                            onPressed: () {
-                              _showSettingsPanel();
-                            },
-                            icon: Icon(
-                              Icons.settings,
-                              color: Color.fromARGB(255, 230, 230, 230),
-                            ),
-                            label: Text("Settings")),
                       ),
                       Expanded(
                           //Notifications
@@ -212,50 +327,47 @@ class _TestState extends State<Test> {
                           ),
                     ], //actions inappbar expects widgetlist of buttons
                   ),
-                  body: Column(children: [
-                    // Text(widget.curr.),
-                    ProductsList(details: widget.curr, query: ''),
-                    //  ),
-                    /*FutureBuilder(
-                          future: _getImage(context, 'avatar1.png'),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              return Container();
-                            }
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Loading();
-                            } else {
-                              return Container(child:Text("Couldn't load image"));
-                            }
-                          })*/
-                    Container(
-                        decoration: boxDecoration,
-                        alignment: Alignment.bottomCenter,
-                        child: TextButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                if (_isQueried == false)
-                                  _isQueried = true;
-                                else
-                                  _isQueried = false;
-                              });
-                            },
-                            icon: Icon(Icons.money),
-                            label: Text("List most costly products")))
-                  ]),
                 ),
-              )
-            : Dashboard());
+                body: Column(children: [
+                  // Text(widget.curr.),
+                  ProductsList(
+                    details: widget.curr,
+                    query: '',
+                    custData: widget.cust,
+                    supData: widget.sup,
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                      decoration: boxDecoration,
+                      alignment: Alignment.bottomCenter,
+                      child: TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              if (_isQueried == false)
+                                _isQueried = true;
+                              else
+                                _isQueried = false;
+                            });
+                          },
+                          icon: Icon(Icons.money),
+                          label: Text("List most costly products")))
+                ]),
+              ),
+            )
+          : Dashboard(), //if second nav tab is clicked
+    );
   }
 }
 
 //This class is used to get the query variable
 //SearchBar implements stream provider, whose list of products
-//are received as as provider in the products list child using context
+//are always received as as provider in the products list child
 class MySearchDelegate extends SearchDelegate {
+  SupplierData? sup;
+  CustData? cust;
   CurrentLoginDetails details;
   BuildContext context;
-  MySearchDelegate(this.details, this.context);
+  MySearchDelegate(this.sup, this.cust, this.details, this.context);
   @override
   List<Widget>? buildActions(BuildContext context) {
     [
@@ -294,9 +406,13 @@ class MySearchDelegate extends SearchDelegate {
               ? DatabaseService(uid: details.uid).items
               : DatabaseService(uid: details.uid).myItems, //expensive(),
       child: Column(
-        //maybe remove this
         children: [
-          ProductsList(details: details, query: query),
+          ProductsList(
+            details: details,
+            query: query,
+            custData: cust,
+            supData: sup,
+          ), //this fetches product data from the stream provider parent search bar
         ],
       ),
     );
@@ -328,250 +444,6 @@ class MySearchDelegate extends SearchDelegate {
   }
 }
 
-///extra code
 
-abstract class AnimationControllerState<T extends StatefulWidget>
-    extends State<T> with SingleTickerProviderStateMixin {
-  AnimationControllerState(this.animationDuration);
-  final Duration animationDuration;
-  late final animationController =
-      AnimationController(vsync: this, duration: animationDuration);
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-}
 
 //Shake the bell icon
-class ShakeWidget extends StatefulWidget {
-  const ShakeWidget({
-    Key? key,
-    required this.child,
-    required this.shakeOffset,
-    this.shakeCount = 3,
-    this.shakeDuration = const Duration(milliseconds: 400),
-  }) : super(key: key);
-  final Widget child;
-  final double shakeOffset;
-  final int shakeCount;
-  final Duration shakeDuration;
-
-  @override
-  ShakeWidgetState createState() => ShakeWidgetState(shakeDuration);
-}
-
-class ShakeWidgetState extends AnimationControllerState<ShakeWidget> {
-  ShakeWidgetState(Duration duration) : super(duration);
-
-  @override
-  void initState() {
-    super.initState();
-    animationController.addStatusListener(_updateStatus);
-  }
-
-  @override
-  void dispose() {
-    animationController.removeStatusListener(_updateStatus);
-    super.dispose();
-  }
-
-  void _updateStatus(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      animationController.reset();
-    }
-  }
-
-  void shake() {
-    animationController.forward();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // 1. return an AnimatedBuilder
-    return AnimatedBuilder(
-      // 2. pass our custom animation as an argument
-      animation: animationController,
-      // 3. optimization: pass the given child as an argument
-      child: widget.child,
-      builder: (context, child) {
-        final sineValue =
-            sin(widget.shakeCount * 2 * pi * animationController.value);
-        return Transform.translate(
-          // 4. apply a translation as a function of the animation value
-          offset: Offset(sineValue * widget.shakeOffset, 0),
-          // 5. use the child widget
-          child: child,
-        );
-      },
-    );
-  }
-}
-
-class UserHome extends StatefulWidget {
-  final CurrentLoginDetails details;
-  UserHome({super.key, required this.details});
-
-  @override
-  State<UserHome> createState() => _UserHomeState();
-}
-
-class _UserHomeState extends State<UserHome> {
-  final AuthService _auth = AuthService();
-  final _formKeyUserHome = GlobalKey<FormState>();
-  @override
-  Widget build(BuildContext context) {
-    /*return Scaffold(
-      //drawer:NavBar()
-      appBar: AppBar(),
-      //  body:
-    );
-  }*/
-    if (widget.details.userType == "customer") {
-      return Form(
-          key: _formKeyUserHome,
-          child: StreamBuilder<CustData?>(
-              stream: DatabaseService(uid: widget.details.uid).custData,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  CustData cust = snapshot.data!;
-                  return Column(
-                    children: [
-                      Text(cust.address),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton.icon(
-                          //can also use textbutton
-                          onPressed: () async {
-                            await _auth.signOut();
-                            int count = 1;
-                            Navigator.of(context).popUntil((_) => count++ >= 2);
-                          },
-                          icon: Icon(Icons.person),
-                          label: Text("Logout"),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20),
-                              minimumSize: const Size(
-                                200,
-                                50,
-                              ),
-                              textStyle: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  //error reading cuistomer data
-                  return Column(
-                    children: [
-                      Text("Something still doesn't work as a customer"),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton.icon(
-                          //can also use textbutton
-                          onPressed: () async {
-                            await _auth.signOut();
-                            int count = 1;
-                            Navigator.of(context).popUntil((_) => count++ >= 2);
-                          },
-                          icon: Icon(Icons.person),
-                          label: Text("Logout"),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20),
-                              minimumSize: const Size(
-                                200,
-                                50,
-                              ),
-                              textStyle: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                    ],
-                  );
-                } /*else if (snapshot.hasError) {
-                  return Column(
-                    children: [
-                      Text(" There is an error in stream builder"),
-                    
-                    ],
-                  );
-                }*/
-              }));
-    } else {
-      //if the user is a supplier
-      return Form(
-          child: StreamBuilder<SupplierData>(
-              stream: DatabaseService(uid: widget.details.uid).supData,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  SupplierData sup = snapshot.data!;
-                  return /*Column(
-                    children: [
-                      Text(sup.name),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton.icon(
-                          //can also use textbutton
-                          onPressed: () async {
-                            await _auth.signOut();
-                            int count = 1;
-                            Navigator.of(context).popUntil((_) => count++ >= 2);
-                          },
-                          icon: Icon(Icons.person),
-                          label: const Text("Logout"),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20),
-                              minimumSize: const Size(
-                                200,
-                                50,
-                              ),
-                              textStyle: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                    ],
-                  );*/
-                      Test(curr: widget.details);
-                } else {
-                  //error reading supplier info
-                  return Column(
-                    children: [
-                      Text("Something still doesn't work as a supplier"),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton.icon(
-                          //can also use textbutton
-                          onPressed: () async {
-                            await _auth.signOut();
-                            int count = 1;
-                            Navigator.of(context).popUntil((_) => count++ >= 2);
-                          },
-                          icon: Icon(Icons.person),
-                          label: Text("Logout"),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20),
-                              minimumSize: const Size(
-                                200,
-                                50,
-                              ),
-                              textStyle: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                    ],
-                  );
-                }
-              }));
-    }
-  }
-}

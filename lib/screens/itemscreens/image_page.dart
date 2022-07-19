@@ -2,7 +2,7 @@ import 'package:bakerie_haven/Services/firebase_api_storage.dart';
 import 'package:bakerie_haven/models/firebase_file.dart';
 import 'package:flutter/material.dart';
 import 'package:bakerie_haven/models/product.dart';
-import 'package:bakerie_haven/screens/home/image_page.dart';
+import 'package:bakerie_haven/screens/itemscreens/image_page.dart';
 
 class ImagePage extends StatelessWidget {
   final FirebaseFile file;

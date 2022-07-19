@@ -26,6 +26,30 @@ class DatabaseService {
 
 //adding user data to bakerie app
 
+  Future addItem(int myItemCount, String itemName, int price, String supplierId,
+      List tags) async {
+    String itemId = supplierId + 'item' + (myItemCount + 1).toString();
+    await itemCollection.doc(itemId).set({
+      'itemId': itemId,
+      'itemName': itemName,
+      'price': price,
+      'supplierId': supplierId,
+      'tags': tags
+    });
+    return await supCollection
+        .doc(supplierId)
+        .update({'myItemCount': myItemCount + 1});
+  }
+
+  Future updateItemData(
+      String itemId, String itemName, int price, List tags) async {
+    return await itemCollection.doc(itemId).update({
+      'itemName': itemName,
+      'price': price,
+      'tags': tags
+    }); //will create if doesnt exist
+  }
+
   Future updateCustData(
       String name, int age, String address, String url) async {
     return await custCollection.doc(uid).set({
@@ -34,8 +58,6 @@ class DatabaseService {
       'age': age,
       'address': address,
       'url': url,
-      //'address':address;
-      // 'ref':ref,
     }); //will create if doesnt exist
   }
 
@@ -45,8 +67,6 @@ class DatabaseService {
       'email': email,
       'pass': password,
       'user': type,
-      //'address':address;
-      // 'ref':ref,
     }); //will create if doesnt exist
   }
 
@@ -188,11 +208,5 @@ class DatabaseService {
         ///     uid.toString()) //where('suppliers'.contains(uid.toString()))
         .snapshots()
         .map(_productListFromSnapshot);
-  }
-
-  int get myItemCount {
-    //List<DocumentSnapshot> snap=itemCollection.where('supplierId',isEqualTo:
-    //uid.toString()).snapshots();
-    return 5;
   }
 }

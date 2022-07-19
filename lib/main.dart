@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart'; //for checking playfprm code
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart'; //picking files and streams
 import 'package:bakerie_haven/Services/auth.dart';
@@ -14,7 +15,7 @@ import 'firebase_options.dart'; //for options
 
 import 'package:bakerie_haven/models/currentuser.dart';
 //import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:bakerie_haven/screens/home/dashboard.dart';
+import 'package:bakerie_haven/screens/home/location.dart';
 
 //import 'package:sliver_tools/sliver_tools.dart';
 //shared variables
@@ -22,6 +23,8 @@ import 'package:bakerie_haven/screens/home/dashboard.dart';
 //encryption
 //import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 //import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:bakerie_haven/shared/theme.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -36,11 +39,13 @@ Future<void> main() async {
 //web or desktop specific code
   }
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  //const MyApp({Key? key}) : super(key: key);
+  int _counter = 0;
+  //final counterBloc = CounterBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -48,33 +53,15 @@ class MyApp extends StatelessWidget {
     //wrap material app with streamrpovider that changes app
     //depending on changesin the authentication service -lo/sinout/in
     return StreamProvider<CurrentUser?>.value(
-      initialData: null,
-      //variable curr wascreated
+        initialData: null,
+        //variable curr wascreated
 
-      value: AuthService().user, //stream to listen to
-      child: MaterialApp(
-          /* theme: ThemeData(
-              // Define the default brightness and colors.
-              brightness: Brightness.dark,
-              primaryColor: Colors
-                  .lightBlue[800], //Color(0XFF673f45), //Colors.lightBlue[800],
-
-              // Define the default font family.
-              fontFamily: 'Georgia',
-
-              // Define the default `TextTheme`. Use this to specify the default
-              // text styling for headlines, titles, bodies of text, and more.
-              textTheme: const TextTheme(
-                headline1:
-                    TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
-                headline6:
-                    TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic),
-                bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Georgia'),
-              ),
-            ),*/
+        value: AuthService().user, //stream to listen to
+        child: MaterialApp(
+          theme: theme(),
           home:
-              Wrapper()), //Dashboard()), //Wrapper()), //SeeMoreDropDown()), //
-    );
+              Wrapper(), //), //Dashboard()), //Wrapper()), //SeeMoreDropDown()), //
+        ));
   }
 }
 

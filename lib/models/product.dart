@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:flutter/material.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 
 class Product {
   final String prodId;
@@ -47,7 +47,7 @@ class SupplierData {
 class CustData {
   final String custId;
   final String name;
-  final double age; //changed from integer
+  final int age; //changed from integer
   final String address;
   final String url;
   CustData(this.custId, this.name, this.age, this.address, this.url);

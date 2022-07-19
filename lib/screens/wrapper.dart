@@ -1,3 +1,7 @@
+import 'package:bakerie_haven/blocs/todos/todos_bloc.dart';
+import 'package:bakerie_haven/blocs/todos/todos.dart';
+import 'package:firebase_database/firebase_database.dart';
+//import 'package:bakerie_haven/models/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bakerie_haven/screens/home/home.dart';
@@ -5,7 +9,6 @@ import 'package:bakerie_haven/screens/authenticate/authenticate.dart';
 import 'package:bakerie_haven/models/currentuser.dart';
 //import 'package:bakerie_haven/shared/session.dart';
 //import 'autoLogin.dart';
-import 'authenticate/authenticate.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bakerie_haven/Services/auth.dart';
 
@@ -18,34 +21,9 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   final AuthService _auth = AuthService();
-  //SessionManager prefs = SessionManager();
+
   bool loading = false;
   bool _found = false;
-
-  /*if (!prefs.containsKey(
-            'email') //('type') != null&& sharedPreferences!.getString('id') != )
-        ) {
-     
-      prefs.setString('email', "joshuabridgemohan966@gmail.com");
-      prefs.setString('pw', "ilovefood69"); prefs.setString('id', "mKsnn6UNRLWINz4evY7IOm3BAr32");
-      prefs.setString('type', "customer");
-      setState(() {
-        type = "unknown";
-        id = "guest";
-        email = "none";
-        pw = "pass";
-      });
-
-      print(email + "was found and printed from shareedpreferences ");
-    } else {
-      setState(() {
-        type = prefs
-            .getString('type')!; //watch where the exclamation mark is
-        email = prefs.getString('email')!;
-        id = prefs.getString('id')!;
-      });
-    }
-  }*/
 
   @override
   void initState() {
@@ -56,22 +34,6 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   Widget build(BuildContext context) {
-    //SharedPreferences? prefs;
-    //getVal(prefs!);
-    //print(" im getting my prefs again");
-    //prefs.clearPrefs();
-
-    //Future<String> type = prefs.getType();
-    //prefs.setEmail("iluvwendy99@gmail.com");
-    /*Future<String> email;
-    Future<String> pw;
-    Future<String> type = email = prefs.getEmail();
-    if (email == "iluvwendy99@gmail.com") {
-      setState(() {
-        _found = true;
-      });
-    }*/
-
     final user = Provider.of<CurrentUser?>(context);
 
     if (user == null || user == "") {
@@ -81,43 +43,166 @@ class _WrapperState extends State<Wrapper> {
 
       //if data exists, and we sign in, we'll be redirected to home page
 
-      // print("we are in wrapper file,and didnt find a user");
-      /* if (_found == false) {
-        //
-        // found = true;
-        print("we  didnt fix prefs");*/
-      return Authenticate(); //Authenticate();
-    } //else {
-    /* print("we got email toload from prefs");
-        return AutoLogin(
-          context,
-          //email,
-          //type,
-        );
-      }
-      //autologsin-send emailn pw
-    }*/
-    else
-      //print(" home is being printed..getting shared prefsagain ");
-      // getVal();
-      // print("autologging inl...");
+      //
+      // found = true;
+
+      return Authenticate();
+    } else
       return Home();
-    //send id and usertype
-  } // RAT BOY - JUST ADD GETVALPREFERENCES TO GET VALUES TO SEND TO HOME
+  } //
 
   Widget AutoLogin(
       BuildContext context /*, Future<String> email, Future<String> type*/) {
     Widget CancleButton =
         InkWell(child: TextButton(onPressed: () {}, child: Text("cancel")));
     return Scaffold(
-        /*appBar: AppBar(
-          actions: [
-            PopupMenuButton(
-                itemBuilder: (context) => [PopupMenuItem(child: Text(""))])
-          ],
-          /*iconTheme:   IconTheme(data: IconThemeData(color: Colors.red, opacity: 1.0,size: 12.0),),),child: Text('m'),);*/
-          title: Text("Bakerie"),
-        ),*/
         body: Center(child: Text("ia am loggin in automatically ")));
   }
 }
+
+/*class TestWidgets extends StatelessWidget {
+  //const TestWidgets({super.key});
+  List<Todo> todos = [
+    Todo(id: '1', task: 'Sample Todo', description: 'This is a test To Do'),
+    Todo(id: '1', task: 'Sample Todo', description: 'This is a test To Do'),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Bloc Pattern With Database'), actions: [
+        IconButton(
+            onPressed: () {
+              //move to add to-do widget
+              MaterialPageRoute(builder: (context) => TestDatabase());
+            },
+            icon: Icon(Icons.plus_one)),
+      ]),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: ListView.builder(
+                  itemCount: todos.length,
+                  itemBuilder: (context, index) {
+                    return _ToDoCard(todos[index]);
+                  }),
+            ),
+            //returning todo card widget
+          ],
+        ),
+      ),
+    );
+  }
+
+  Card _ToDoCard(Todo todo) {
+    return Card(
+      child: Text(todo.description),
+    );
+  }
+}
+
+class TestDatabase extends StatefulWidget {
+  const TestDatabase({super.key});
+
+  @override
+  State<TestDatabase> createState() => _TestDatabaseState();
+}
+
+class _TestDatabaseState extends State<TestDatabase> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Testing bloc and real time database'),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            /* Container(
+              child: Text('Test Database Screen'),
+            ),*/
+            TextButton.icon(
+                onPressed: () {
+                  MaterialPageRoute(builder: ((context) => ReadDatabase()));
+                },
+                icon: Icon(Icons.read_more),
+                label: Text('Read examples')),
+            TextButton.icon(
+                onPressed: () {
+                  MaterialPageRoute(builder: ((context) => WritingDatabase()));
+                },
+                icon: Icon(Icons.read_more),
+                label: Text('Write examples'))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ReadDatabase extends StatefulWidget {
+  const ReadDatabase({super.key});
+
+  @override
+  State<ReadDatabase> createState() => _ReadDatabaseState();
+}
+
+class _ReadDatabaseState extends State<ReadDatabase> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        title: Text('Reading from database'),
+      ),
+      body: Column(
+        children: [
+          Center(
+            child: Text('Testing the database'),
+          )
+        ],
+      ),
+    ));
+  }
+}
+
+class WritingDatabase extends StatefulWidget {
+  const WritingDatabase({super.key});
+
+  @override
+  State<WritingDatabase> createState() => _WritingDatabaseState();
+}
+
+class _WritingDatabaseState extends State<WritingDatabase> {
+  final database = FirebaseDatabase.instance.ref(); //points to top of the tree
+
+  @override
+  Widget build(BuildContext context) {
+    final dailySpecialRef = database.child('dialySpecial');
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        title: Text('Writing to database'),
+      ),
+      body: Column(
+        children: [
+          Center(
+            child: Text('Testing the database'),
+          ),
+          ElevatedButton.icon(
+              onPressed: () {
+                dailySpecialRef
+                    .set({'itemid': 'user1id', 'price': '20.00'}).then(
+                        (value) =>
+                            print('Special has been written to database'));
+              },
+              icon: Icon(Icons.pages),
+              label: Text('Write')),
+        ],
+      ),
+    ));
+  }
+}*/
