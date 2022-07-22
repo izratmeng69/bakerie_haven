@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:bakerie_haven/Services/auth.dart';
 import 'package:bakerie_haven/shared/widgets/extras/search_bar.dart'; //we added permissions for this plugin in main/androidmanifest.xml
-import 'package:bakerie_haven/models/product.dart';
+import 'package:bakerie_haven/models/streams.dart';
 
 class ShakeWidget extends StatefulWidget {
   const ShakeWidget({

@@ -75,21 +75,24 @@ class _AuthenticateState extends State<Authenticate> {
                       flex: 3,
                       //alignment: Alignment.topCenter,
                       child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                          child: Visibility(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                        child: Visibility(
                             visible: !switchValue,
-                            child: _tapped == false
+                            child: !_tapped
                                 ? Text(
                                     'Are you a Customer or Supplier?',
-                                    style: TextStyle(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline1, /*TextStyle(
                                         color: Colors.purpleAccent,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold),*/
                                   )
-                                : Text('You are registering as a ',
-                                    style: TextStyle(
-                                        color: Colors.purpleAccent,
-                                        fontWeight: FontWeight.bold)),
-                          )),
+                                : Text(
+                                    'You are registering as a ',
+                                    style:
+                                        Theme.of(context).textTheme.headline1,
+                                  )),
+                      ),
                     ),
                     AnimatedOpacity(
                       curve: Curves.elasticOut,
@@ -98,8 +101,9 @@ class _AuthenticateState extends State<Authenticate> {
                       child: Align(
                         alignment: Alignment.topCenter,
                         child: Container(
+                          color: Theme.of(context).backgroundColor,
                           //width: 300,
-                          height: 100, //not
+                          height: 120, //not
 
                           child: ListView.builder(
                               //created scrollable items list
@@ -113,46 +117,84 @@ class _AuthenticateState extends State<Authenticate> {
                                                     borderRadius:
                                                         BorderRadius.circular(200.0)),*/
                                     CircleAvatar(
-                                  //foregroundColor: Colors.black12,
+                                  backgroundColor: Theme.of(context)
+                                      .highlightColor, // Colors.grey,
+                                  radius: 120,
+                                  //  elevation: 12,
+                                  child: Card(
+                                    shadowColor: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(60)),
+                                    elevation: 42,
+                                    //foregroundColor: Colors.black12,
 
-                                  radius: 60,
-
-                                  //  ),
-                                  child: InkWell(
-                                    child: ClipOval(
-                                      child: index == 0
-                                          ? Image.network(
-                                              'https://images.assetsdelivery.com/compings_v2/ihorzigor/ihorzigor1803/ihorzigor180300004.jpg')
-                                          : Image.network(
-                                              'https://cdn0.iconfinder.com/data/icons/miscellaneous-14-color-shadow/128/deliverable_deliver_courier_occupation_package_parcel_supplier-1024.png',
-                                              // height: 100,
-                                              // width: 100,
-                                            ),
+                                    //  ),
+                                    child: InkWell(
+                                      child: ClipOval(
+                                        child: index == 0
+                                            ? Image.network(
+                                                'https://images.assetsdelivery.com/compings_v2/ihorzigor/ihorzigor1803/ihorzigor180300004.jpg')
+                                            : Image.network(
+                                                'https://cdn0.iconfinder.com/data/icons/miscellaneous-14-color-shadow/128/deliverable_deliver_courier_occupation_package_parcel_supplier-1024.png',
+                                                // height: 100,
+                                                // width: 100,
+                                              ),
+                                      ),
+                                      //splashColor: Colors.black12,
+                                      //card foreach type
+                                      onTap: () {
+                                        if (index == 0) {
+                                          setState(() {
+                                            _type = "customer";
+                                            _tapped = true;
+                                            _currentOpacity = 0;
+                                            print(_type);
+                                            print(" index at 0 clicked");
+                                          });
+                                        } else if (index == 1) {
+                                          setState(() {
+                                            _type = "supplier";
+                                            _tapped = true;
+                                            _currentOpacity = 0;
+                                            print(" index at 1 clicked");
+                                          });
+                                        }
+                                      },
                                     ),
-                                    //splashColor: Colors.black12,
-                                    //card foreach type
-                                    onTap: () {
-                                      if (index == 0) {
-                                        setState(() {
-                                          _type = "customer";
-                                          _tapped = true;
-                                          _currentOpacity = 0;
-                                          print(_type);
-                                          print(" index at 0 clicked");
-                                        });
-                                      } else if (index == 1) {
-                                        setState(() {
-                                          _type = "supplier";
-                                          _tapped = true;
-                                          _currentOpacity = 0;
-                                          print(" index at 1 clicked");
-                                        });
-                                      }
-                                    },
                                   ),
                                 );
                               }),
                         ),
+                      ),
+                    ),
+                    AnimatedOpacity(
+                      curve: Curves.elasticOut,
+                      opacity: _currentOpacity == 0 && !switchValue ? 1 : 0,
+                      duration: const Duration(seconds: 10),
+                      child: Column(
+                        children: [
+                          _type == "supplier"
+                              ? Text('Supplier')
+                              : Text('Customer'),
+                          Card(
+                            child: _type == "supplier"
+                                ? Container(
+                                    height: 120,
+                                    child: ClipRRect(
+                                      child: Image.network(
+                                          'https://cdn0.iconfinder.com/data/icons/miscellaneous-14-color-shadow/128/deliverable_deliver_courier_occupation_package_parcel_supplier-1024.png'),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 100,
+                                    child: ClipRRect(
+                                      child: Image.network(
+                                          'https://images.assetsdelivery.com/compings_v2/ihorzigor/ihorzigor1803/ihorzigor180300004.jpg'),
+                                    ),
+                                  ),
+                          ),
+                        ],
                       ),
                     ),
                     BuildForm(context),
@@ -185,6 +227,9 @@ class _AuthenticateState extends State<Authenticate> {
                   });
                 },
               ),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 style: Theme.of(context).textTheme.headline1,
                 decoration: textInputDecoration.copyWith(
@@ -204,7 +249,15 @@ class _AuthenticateState extends State<Authenticate> {
               ),
               switchValue == false
                   ? TextButton(
-                    
+                      onHover: (value) => ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.abc),
+                          label: Chip(
+                              label: Text(
+                            'Register',
+                            style: Theme.of(context).textTheme.headline1,
+                          ))),
+                      autofocus: true,
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(5.0),
                         primary: Colors.white,
@@ -242,19 +295,9 @@ class _AuthenticateState extends State<Authenticate> {
                           //loading = false;
                         }); //if you're signing in
                       },
-                      child: const Text(
-                        "Register",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ))
+                      child: Chip(label: Text('Register')))
                   : TextButton(
-                      child: Text(
-                        "Sign In",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
+                      child: Chip(label: Text('Sign In')),
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(5.0),
                         primary: Colors.white,
@@ -281,7 +324,8 @@ class _AuthenticateState extends State<Authenticate> {
                             });
                           }
                         }
-                      }),
+                      },
+                    ),
             ],
           ),
         ),
@@ -330,8 +374,9 @@ class _AuthenticateState extends State<Authenticate> {
   Widget buildSwitch() => Transform.scale(
         scale: 1.2,
         child: Switch.adaptive(
-            activeColor: Colors.blueAccent,
-            activeTrackColor: Colors.blue,
+            activeColor: Theme.of(context).primaryColor, // Colors.blueAccent,
+            activeTrackColor:
+                Theme.of(context).secondaryHeaderColor, //Colors.blue,
             value: switchValue,
             onChanged: (value) {
               if (switchValue == false) {

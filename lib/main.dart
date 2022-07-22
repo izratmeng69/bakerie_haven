@@ -13,9 +13,9 @@ import 'package:bakerie_haven/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart'; //for options
 
-import 'package:bakerie_haven/models/currentuser.dart';
+import 'package:bakerie_haven/models/models.dart.dart';
 //import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:bakerie_haven/screens/home/location.dart';
+import 'package:bakerie_haven/screens/home/location_dashboard.dart';
 
 //import 'package:sliver_tools/sliver_tools.dart';
 //shared variables

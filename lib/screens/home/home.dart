@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'dart:math';
+import 'package:bakerie_haven/screens/itemscreens/category_tile.dart';
 import 'package:flutter/material.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bakerie_haven/Services/auth.dart';
 import 'package:bakerie_haven/Services/database.dart';
 import 'package:provider/provider.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:bakerie_haven/models/product.dart';
-import 'package:bakerie_haven/screens/home/location.dart';
+import 'package:bakerie_haven/models/streams.dart';
+import 'package:bakerie_haven/screens/home/location_dashboard.dart';
 import 'package:bakerie_haven/screens/itemscreens/product_list.dart';
 import 'package:bakerie_haven/screens/itemscreens/product_tile.dart';
 import 'package:bakerie_haven/screens/home/settings_form.dart';
@@ -17,7 +18,7 @@ import 'package:bakerie_haven/shared/widgets/extras/navbar.dart';
 import 'package:bakerie_haven/shared/loading.dart';
 import 'package:bakerie_haven/shared/constants.dart';
 //import 'package:bakerie_haven/shared/session.dart';
-import 'package:bakerie_haven/models/currentuser.dart';
+import 'package:bakerie_haven/models/models.dart.dart';
 //import 'package:cool_nav/cool_nav.dart';
 //adding cool nav plugin for flipxbox animated navbar
 //import 'package:geolocator/geolocator.dart';
@@ -208,18 +209,6 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
-    /* void _showSettingsPanel() {
-      //this is a built in flutter widget fucntion
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: SettingsForm(details: widget.curr),
-            );
-          });
-    }
-*/
     final user = Provider.of<CurrentUser>(context);
     if (widget.curr == null) {
       return Container(child: Center(child: Text("details wanst retrieved")));
@@ -234,7 +223,10 @@ class _TestState extends State<Test> {
     // return //Container(child: Center(child: Text(widget.curr.uid)));
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 230, 230, 230),
+        selectedItemColor: Theme.of(context).primaryColor, //Colors.white,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Theme.of(context)
+            .backgroundColor, //Color.fromARGB(255, 230, 230, 230),
         elevation: 12.0,
         currentIndex: _selectedScreenIndex,
         onTap: _selectScreen,
@@ -260,99 +252,108 @@ class _TestState extends State<Test> {
                   widget.curr.userType == "customer"
                       ? DatabaseService(uid: user.uid).items
                       : DatabaseService(uid: user.uid).myItems, //expensive(),
-              child: Scaffold(
-                drawer: NavBar(widget.curr),
-                backgroundColor: Color.fromARGB(255, 138, 59, 31),
-                appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(100.0),
-                  child: AppBar(
-                    leading: Builder(builder: (BuildContext context) {
-                      //this builder gets rid of default navbar humburger menu icon
-                      return IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          icon: Icon(Icons.face));
-                    }),
-                    /*automaticallyImplyLeading:
+              child: StreamProvider<List<Cat>>.value(
+                  value: DatabaseService(uid: user.uid).cats,
+                  initialData: [],
+                  child: Scaffold(
+                      drawer: NavBar(widget.curr),
+                      backgroundColor: Theme.of(context)
+                          .primaryColor, //Color.fromARGB(255, 230, 230, 230),
+                      appBar: PreferredSize(
+                        preferredSize: Size.fromHeight(100.0),
+                        child: AppBar(
+                          leading: Builder(builder: (BuildContext context) {
+                            //this builder gets rid of default navbar humburger menu icon
+                            return IconButton(
+                                onPressed: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                                icon: Icon(Icons.face));
+                          }),
+                          /*automaticallyImplyLeading:
                     false, */ //this remo0ves unwanted hamburger menu, guess it doesnt
-                    title: Text("Bakerie"),
-                    backgroundColor: Color.fromARGB(255, 230, 230, 230),
-                    elevation: 0.0,
-                    actions: <Widget>[
-                      new Container(),
-                      Expanded(
-                          flex: 1,
-                          child: SizedBox(
-                            height: 20,
-                            width: 100,
-                          )),
-                      Expanded(
-                        flex: 4,
-                        child: IconButton(
-                          onPressed: () {
-                            showSearch(
-                              context: context,
-                              delegate: MySearchDelegate(
-                                widget.sup,
-                                widget.cust,
-                                widget.curr,
-                                context,
+                          title: Text("Bakerie"),
+                          backgroundColor: Theme.of(context)
+                              .backgroundColor, // Color.fromARGB(255, 230, 230, 230),
+                          elevation: 0.0,
+                          actions: <Widget>[
+                            new Container(),
+                            Expanded(
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 100,
+                                )),
+                            Expanded(
+                              flex: 4,
+                              child: IconButton(
+                                onPressed: () {
+                                  showSearch(
+                                    context: context,
+                                    delegate: MySearchDelegate(
+                                      widget.sup,
+                                      widget.cust,
+                                      widget.curr,
+                                      context,
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.search),
                               ),
-                            );
-                          },
-                          icon: Icon(Icons.search),
+                            ),
+                            Expanded(
+                                //Notifications
+                                flex: 1,
+                                child: ShakeWidget(
+                                  // 4. pass the GlobalKey as an argument
+                                  key: shakeKey,
+                                  // 5. configure the animation parameters
+                                  shakeCount: 3,
+                                  shakeOffset: 10,
+                                  shakeDuration: Duration(milliseconds: 500),
+                                  // 6. Add the child widget that will be animated
+                                  child: IconButton(
+                                    color: Theme.of(context).primaryColor,
+                                    icon: Icon(Icons.notifications),
+                                    onPressed: () {
+                                      if (_notifCount == 0)
+                                        shakeKey.currentState?.shake();
+                                      // Scaffold.of(context).openDrawer();
+                                    },
+                                  ),
+                                ) /**/
+                                ),
+                          ], //actions inappbar expects widgetlist of buttons
                         ),
                       ),
-                      Expanded(
-                          //Notifications
-                          flex: 1,
-                          child: ShakeWidget(
-                            // 4. pass the GlobalKey as an argument
-                            key: shakeKey,
-                            // 5. configure the animation parameters
-                            shakeCount: 3,
-                            shakeOffset: 10,
-                            shakeDuration: Duration(milliseconds: 500),
-                            // 6. Add the child widget that will be animated
-                            child: IconButton(
-                              icon: Icon(Icons.notifications),
-                              onPressed: () {
-                                if (_notifCount == 0)
-                                  shakeKey.currentState?.shake();
-                                // Scaffold.of(context).openDrawer();
-                              },
+                      body: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: Column(
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Bakerie'),
+                                  // Text(widget.curr.),
+                                  ProductsList(
+                                    details: widget.curr,
+                                    query: '',
+                                    custData: widget.cust,
+                                    supData: widget.sup,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ) /**/
-                          ),
-                    ], //actions inappbar expects widgetlist of buttons
-                  ),
-                ),
-                body: Column(children: [
-                  // Text(widget.curr.),
-                  ProductsList(
-                    details: widget.curr,
-                    query: '',
-                    custData: widget.cust,
-                    supData: widget.sup,
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                      decoration: boxDecoration,
-                      alignment: Alignment.bottomCenter,
-                      child: TextButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              if (_isQueried == false)
-                                _isQueried = true;
-                              else
-                                _isQueried = false;
-                            });
-                          },
-                          icon: Icon(Icons.money),
-                          label: Text("List most costly products")))
-                ]),
-              ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.only(top: 20, bottom: 20),
+                                color: Theme.of(context).backgroundColor,
+                                child: Text('Some thing here lol'),
+                              ),
+                            ),
+                          ]))),
             )
           : Dashboard(), //if second nav tab is clicked
     );
@@ -438,7 +439,10 @@ class MySearchDelegate extends SearchDelegate {
               query = suggestion;
               showResults(context);
             },
-            title: Text(suggestion),
+            title: Text(
+              suggestion,
+              style: Theme.of(context).textTheme.headline1,
+            ),
           );
         });
   }

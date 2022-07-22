@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bakerie_haven/screens/home/home.dart';
 import 'package:bakerie_haven/screens/authenticate/authenticate.dart';
-import 'package:bakerie_haven/models/currentuser.dart';
+import 'package:bakerie_haven/models/models.dart.dart';
 //import 'package:bakerie_haven/shared/session.dart';
 //import 'autoLogin.dart';
 //import 'package:shared_preferences/shared_preferences.dart';

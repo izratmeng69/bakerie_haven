@@ -1,8 +1,9 @@
+import 'package:bakerie_haven/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:bakerie_haven/models/product.dart';
+import 'package:bakerie_haven/models/streams.dart';
 
-import 'package:bakerie_haven/models/currentuser.dart';
+import 'package:bakerie_haven/models/models.dart.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 //images in storage
@@ -22,12 +23,14 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('Products');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('Users');
+  final CollectionReference catCollection =
+      FirebaseFirestore.instance.collection('Categories');
   //'orders collectio  nwill be created if it doesnt already exists
 
 //adding user data to bakerie app
 
-  Future addItem(int myItemCount, String itemName, int price, String supplierId,
-      List tags) async {
+  Future addItem(int myItemCount, String itemName, double price,
+      String supplierId, List tags) async {
     String itemId = supplierId + 'item' + (myItemCount + 1).toString();
     await itemCollection.doc(itemId).set({
       'itemId': itemId,
@@ -42,7 +45,7 @@ class DatabaseService {
   }
 
   Future updateItemData(
-      String itemId, String itemName, int price, List tags) async {
+      String itemId, String itemName, double price, List tags) async {
     return await itemCollection.doc(itemId).update({
       'itemName': itemName,
       'price': price,
@@ -121,40 +124,46 @@ class DatabaseService {
     //Reading from users database, we take our uid as a parameter and maps it to our userdata object
   }
 
-  //useradata from snapshot
-
-  /*Stream<QuerySnapshot?> get snap {
-    //snapshot of orders
-    return orderCollection.snapshots();
-  } //old stream returning snapshot-unused*/
-
   List<Product> _productListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs //create list of product objects from mapped docs snap
+    return snapshot.docs
+        .asMap()
+        .entries
         .map((e) => Product(
-              e.get('itemId'),
-              e.get('supplierId'),
-              e.get('itemName'),
-              e.get('price'),
-              // e.get('cat'),
-              e.get('tags'),
-
-              // e.get('link'),
-            ))
-        .toList();
-    //List<Product> products;
+            index: e.key,
+            itemId: e.value['itemId'],
+            supplierId: e.value['supplierId'],
+            itemName: e.value['itemName'],
+            price: e.value['price'],
+            tags: e.value['tags']))
+        .toList(); //create list of product objects from mapped docs snap
   }
 
-  /*List<String> convert(List<dynamic> array) {
-    //from list of dynamic to list f strings-used for reading arrays in firestore
-    final List<String> strs = array.map((e) => e.toString()).toList();
-    return strs;
-  }*/
+  List<Cat> _CatListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs
+        .asMap()
+        .entries
+        .map((e) => Cat(
+            index: e.key,
+            catId: e.value['catId'],
+            description: e.value['description'],
+            //   supplierId: e.value['supplierId'],
+            catName: e.value['catName'],
+            //price: e.value['price'],
+            similarTags: e.value['similarTags']))
+        .toList(); //create list of product objects from mapped docs snap
+  }
 
 //stream of list of products
   Stream<List<Product>> get items {
     print(" wear viewing item table");
     //gets all itemson sale
     return itemCollection.snapshots().map(_productListFromSnapshot);
+  }
+
+  Stream<List<Cat>> get cats {
+ //   print(" wear viewing item table");
+    //gets all itemson sale
+    return catCollection.snapshots().map(_CatListFromSnapshot);
   }
 
   Stream<List<Product>> get basicItems {

@@ -1,7 +1,7 @@
 import 'package:bakerie_haven/Services/firebase_api_storage.dart';
 import 'package:bakerie_haven/models/firebase_file.dart';
 import 'package:flutter/material.dart';
-import 'package:bakerie_haven/models/product.dart';
+import 'package:bakerie_haven/models/streams.dart';
 import 'package:bakerie_haven/screens/itemscreens/image_page.dart';
 
 class ImagePage extends StatelessWidget {
@@ -15,11 +15,11 @@ class ImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isImage = ['.jpeg', '.jpg', '.png'].any(file.name.contains);
+    //final isImage = ['.jpeg', '.jpg', '.png'].any(file.name.contains);
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(prod.prodName),
+          title: Text(prod.itemName),
           centerTitle: true,
           actions: [
             IconButton(
@@ -48,6 +48,7 @@ class ImagePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
                       file.url,
+
                       // height: 300,
                       fit: BoxFit.cover,
                     ),
@@ -58,11 +59,15 @@ class ImagePage extends StatelessWidget {
                     children: [
                       Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Text(prod.prodName))
+                          child: Text(prod.itemName))
                     ],
                   ),*/
             ),
-            Flexible(flex: 1, child: Text(''))
+            Flexible(
+                flex: 1,
+                child: Chip(
+                  label: Text(prod.itemName),
+                )),
           ],
         ));
   }

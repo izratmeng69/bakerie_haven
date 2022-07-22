@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bakerie_haven/models/product.dart';
+import 'package:bakerie_haven/models/streams.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:bakerie_haven/shared/loading.dart';
@@ -36,7 +36,9 @@ class ProductTile extends StatelessWidget {
               child: Container(
                 child: ElevatedButton(
                   onPressed: () {},
-                  child: Text('Pay amount yet for item  of index $index'),
+                  child: Text('Pay amount' +
+                      prod.price.toString() +
+                      ' for item  of index $index'),
                 ),
               ),
             );
@@ -44,42 +46,28 @@ class ProductTile extends StatelessWidget {
     } //end of payment form
 
     return Card(
-        margin: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-        child: InkWell(
-          onTap: () {
-            _showPurchasePanel(index);
-          },
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.network(file.url),
+      //margin: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+      child: InkWell(
+        onTap: () {
+          _showPurchasePanel(index);
+        },
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Expanded(
+            child: ClipRRect(
+              //borderRadius: BorderRadius.circular(30),
+              //radius: 50,
+              child: Image.network(
+                file.url.toString().trim(),
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
               ),
-              ListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      50.0, // Change your border radius here
-                    ),
-                  ),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ImagePage(prod: prod, file: file),
-                      )),
-                  leading: ClipOval(
-                    //for a tile
-                    //  radius: 25.0,
-                    //  backgroundColor: Colors.brown[100],
-                    child: Image.network(
-                      file.url.toString().trim(),
-                      width: 52,
-                      height: 52,
-                      fit: BoxFit.cover,
-                    ),
-                  ), //whats on the left
-                  title: Text(prod.prodName),
-                  subtitle: Text("thi is an item record of  " + prod.prodName)),
-            ],
+            ),
           ),
-        ));
+          Chip(label: Text(prod.itemName))
+        ]),
+      ),
+    );
   }
 }
 

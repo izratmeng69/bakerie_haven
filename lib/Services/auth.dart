@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:bakerie_haven/Services/database.dart';
-import 'package:bakerie_haven/models/currentuser.dart';
+import 'package:bakerie_haven/models/models.dart.dart';
 
 /*FirebaseUser has been changed to User
 

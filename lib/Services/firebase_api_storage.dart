@@ -39,6 +39,7 @@ class FirebaseApi {
   }
 
   static Future downloadFile(Reference ref) async {
+    
     final dir = await getApplicationDocumentsDirectory();
     final file = File('${dir.path}/${ref.name}');
 

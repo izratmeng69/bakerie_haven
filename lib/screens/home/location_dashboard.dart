@@ -1,6 +1,9 @@
+import 'package:bakerie_haven/Services/firebase_api_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:firebase_database/firebase_database.dart';
 
+//import 'package:bakerie_haven/models/';
 class Dashboard extends StatefulWidget {
   // const Dashboard({Key? key}) : super(key: key);
 
@@ -11,6 +14,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   //location coordinates
   var locationMessage = "";
+  final database = FirebaseDatabase.instance.ref();
 
   //final Geolocator geo = Geolocator();
   Future<void> getCurrentLocation() async {
@@ -23,23 +27,23 @@ class _DashboardState extends State<Dashboard> {
         return Future.error('Location Not Available');
       }
     } else {
-      throw Exception('Error');
+      var position =
+          Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      var lastPosition = Geolocator.getLastKnownPosition();
+      print(lastPosition);
+      setState(() {
+        locationMessage = "$position.latitude, $position.longtitude";
+      });
+      print(locationMessage);
+      //throw Exception('Error');
     }
     // return await Geolocator.getCurrentPosition();
     //}
-
-    var position =
-        Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    var lastPosition = Geolocator.getLastKnownPosition();
-    print(lastPosition);
-    setState(() {
-      locationMessage = "$position.latitude, $position.longtitude";
-    });
-    print(locationMessage);
   }
 
   @override
   Widget build(BuildContext context) {
+    final livedata = database.child('/live');
     return Container(
       child: Scaffold(
         body: Column(
